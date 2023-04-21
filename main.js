@@ -20,7 +20,6 @@ setInterval(displayCurrentTime, 1000)
 
 let timer;
 
-
 function startTimer() {
     clearInterval(timer)
     const duration = parseInt(inputDuration.value) * 60 * 1000; //convert minutes t0 milliseconds
