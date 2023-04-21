@@ -5,18 +5,25 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Pomodoro App</title>
-		<link rel="stylesheet" href="style.css" />
-		<script src="main.js" defer></script>
+		<link rel="stylesheet" href="/dist/style.css" />
+		<script src="/js/main.js" defer></script>
+		<link href="/dist/output.css" rel="stylesheet" />
 	</head>
-	<body>
-		<div class="clock-container">
-			<p id="clock"></p>
+	<body class="font-inter bg-gray-200">
+		<div class="clock-container p-2">
+			<p id="clock" class="font-bold text-lg"></p>
 		</div>
-		<div class="timer">
-			<h1>Pomodoro</h1>
-			<input type="number" id="duration" min="25" max="60"/>
-			<p id="timer">.....</p>
-			<button id="start">Start</button>
+		<div class="timer w-[25rem] py-10 rounded-md bg-white shadow-lg border-gray-200">
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor" class="w-7 h-7">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+			</svg>
+			<h1 class="text-3xl font-semibold text-center mb-5"><span class="text-blue-500 font-bold">Fomo</span>doro</h1>
+			<div class="flex items-center gap-2 my-5 w-full h-10 px-10">
+				<input type="range" class="w-[80%] bg-blue-500 hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:ring-0" id="duration" min="25" max="60" step="5" />
+				<span class="p-1 w-[12%] flex justify-center items-center rounded-md bg-gray-200" title="Minutes"><p id="slider-value" class="font-semibold text-sm"></p></span>
+			</div>
+			<p id="timer" class="text-5xl my-5 mb-10 font-semibold h-[5rem] flex justify-center items-center">.....</p>
+			<button id="start" class="w-[70%] h-8 text-white font-semibold rounded-lg bg-blue-500 hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300">Start</button>
 		</div>
 	</body>
 </html>
