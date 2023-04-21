@@ -1,0 +1,23 @@
+{
+  "name": "timer-app",
+  "version": "1.0.0",
+  "description": "A pomodoro timer app that helps user's productivity.",
+  "main": "main.js",
+  "scripts": {
+    "dev": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oddsdefier-github/Timer-App.git"
+  },
+  "author": "Jeffry James Paner",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/oddsdefier-github/Timer-App/issues"
+  },
+  "homepage": "https://github.com/oddsdefier-github/Timer-App#readme",
+  "devDependencies": {
+    "tailwindcss": "^3.3.1",
+    "tailwindcss-font-inter": "^3.0.1"
+  }
+}
