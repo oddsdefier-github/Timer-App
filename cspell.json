@@ -4,7 +4,7 @@
     "dictionaryDefinitions": [],
     "dictionaries": [],
     "words": [],
-    "ignoreWords": ["Pomodoro", "Hakdog"],
+    "ignoreWords": ["Pomodoro", "Hakdog", "gsap"],
     "import": []
 }
 

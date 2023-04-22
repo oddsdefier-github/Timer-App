@@ -30,3 +30,10 @@ body {
 input {
 	border: 1px solid red;
 }
+
+button:active {
+	transform: translateX(20%);
+	transition: 2s;
+}
+
+
