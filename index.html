@@ -23,17 +23,17 @@
 					<input type="range" class="w-[80%] bg-blue-500 hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:ring-0" id="duration" min="1" max="30" step="1" />
 					<span class="p-1 w-[12%] flex justify-center items-center rounded-md bg-gray-200" title="Minutes"><p id="slider-value" class="font-semibold text-sm"></p></span>
 				</div>
-				<div class="my-5 mb-10 h-[5rem] flex justify-center items-end gap-1">
+				<div class="my-5 mb-10 h-[5rem] flex justify-center items-center gap-1">
 					<p id="timer" class="text-6xl font-semibold">.....</p>
-					<p id="min" class="font-semibold text-gray-600 text-lg mb-1">mins</p>
+					<p id="min" class="font-semibold text-gray-600 text-lg mt-5">mins</p>
 				</div>
 				<div>
 					<p id="time-estimate"></p>
 				</div>
 				<button id="start" class="w-[70%] h-8 text-white font-semibold rounded-lg bg-blue-500 hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300">Start</button>
-				<button id="resume" class="hidden w-[70%] h-8 text-white font-semibold rounded-lg bg-gray-500 hover:bg-gray-600 active:bg-gray-700 focus:outline-none focus:ring focus:ring-green-300">Resume</button>
+				<button id="resume" class="hidden w-[70%] h-8 text-white font-semibold rounded-lg bg-gray-300 hover:bg-gray-600 active:bg-gray-700 focus:outline-none focus:ring focus:ring-green-300">Resume</button>
 				<button id="pause" class="hidden w-[70%] h-8 text-white font-semibold rounded-lg bg-red-500 hover:bg-red-600 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300">Pause</button>
-				<p style="cursor:pointer; display: none;" id="reset">reset</p>
+				<p class="font-bold cursor-pointer hidden" id="reset">reset</p>
 			</div>
 		</header>
 		<footer class="w-full lg:block lg:fixed lg:bottom-0 hidden h-10">

@@ -48,6 +48,8 @@ function startTimer() {
                 timerElement.innerHTML = "0:00";
                 timerElement.innerHTML = "Break time!";
 
+            } else if (remainingTime < 60000) {
+                minElement.innerHTML = "sec"
             }
         }, 1000)
     }
@@ -88,9 +90,13 @@ function resumeInterval() {
         if (remainingTime < 0) {
             clearInterval(timer);
             timerElement.innerHTML = "0:00";
+            timerElement.innerHTML = "Break time!";
+        } else if (remainingTime < 60000) {
+            minElement.innerHTML = "sec"
         }
     }, 1000);
 }
+let titleInterval;
 
 startBtn.addEventListener("click", function () {
     startTimer();
@@ -99,15 +105,17 @@ startBtn.addEventListener("click", function () {
     startBtn.style.display = "none"
     pauseBtn.style.display = "block";
     reset.style.display = "none";
-    title.innerHTML = `<span class="text-2xl text-gray-600">You're <span class="text-blue-500">${remainingTime / 60 / 1000} ${(remainingTime / 60 / 1000) <= 1 ? 'min' : 'mins'} </span> closer <br> in finishing your <span class="font-extrabold text-gray-900">Capstone</span>!</span>`
-
+    titleInterval = setInterval(() => {
+        title.innerHTML = `<span class="text-2xl text-gray-600">You're <span class="text-blue-500">${Math.floor(remainingTime / 60 / 1000)} ${Math.floor(remainingTime / 60 / 1000) <= 1 ? 'min' : 'mins'} </span> closer <br> in finishing your <span class="font-extrabold text-gray-900">Capstone</span>!</span>`
+    }, 0)
 });
 
 pauseBtn.addEventListener("click", function () {
     pauseInterval();
     box.classList.add("shake");
     reset.style.display = "block";
-    title.innerHTML = `<span class="text-2xl">Oopss...<br> <span class="text-red-500">Time is precious!</span>`;
+    clearInterval(titleInterval);
+    title.innerHTML = `<span class="text-2xl">Oopss...<br> <span class="text-red-500">Paused</span>`;
     slider.style.display = "none";
     resumeBtn.style.display = "block";
     startBtn.style.display = "none";
@@ -121,13 +129,15 @@ pauseBtn.addEventListener("click", function () {
 resumeBtn.addEventListener("click", function () {
     resumeInterval();
     reset.style.display = "none";
-    title.innerHTML = `<span class="text-2xl text-gray-600">You're <span class="text-blue-500">${sliderDuration.value} ${sliderDuration.value == 1 ? 'min' : 'mins'} </span> closer <br> in finishing your <span class="font-extrabold text-gray-900">Capstone</span>!</span>`
     box.classList.remove("shake");
     slider.style.display = "none";
     resumeBtn.style.display = "none";
     pauseBtn.style.display = "block";
     timerElement.classList.remove("text-gray-400")
     minElement.classList.remove("text-gray-300");
+    titleInterval = setInterval(() => {
+        title.innerHTML = `<span class="text-2xl text-gray-600">You're <span class="text-blue-500">${Math.floor(remainingTime / 60 / 1000)} ${Math.floor(remainingTime / 60 / 1000) <= 1 ? 'min' : 'mins'} </span> closer <br> in finishing your <span class="font-extrabold text-gray-900">Capstone</span>!</span>`
+    }, 0)
 });
 
 
@@ -165,7 +175,8 @@ reset.addEventListener("click", function () {
     clearInterval(timer);
     reset.style.display = "none";
     clearInterval(estimateInterval);
-    title.innerHTML = `<span class="text-lg">Adjust the slider to reset the timer!</span>`;
+    clearInterval(titleInterval);
+    title.innerHTML = `<span class="text-2xl text-gray-600"><span class="text-blue-600 font-extrabold">Adjust the slider</span><br> to reset the timer!</span>`;
     timeEstimate.style.display = "none"
 })
 
