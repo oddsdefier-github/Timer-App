@@ -55,12 +55,10 @@ function startTimer() {
             const minutes = Math.floor((remainingTime / 1000 / 60) % 60);
             const seconds = Math.floor((remainingTime / 1000) % 60);
             timerElement.innerHTML = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-            remainingTime -= 20000;
-
+            remainingTime -= 1000;
             if (remainingTime < 0) {
                 task++;
                 finishedTask.innerHTML = `<span class="p-2 px-3 rounded-md bg-gray-700 text-gray-100 font-extrabold">${task}</span>`;
-                console.log(task)
                 clearInterval(timer);
                 clearInterval(titleInterval)
                 timerElement.innerHTML = "Done!";
@@ -72,8 +70,11 @@ function startTimer() {
                 minElement.style.display = "none";
             } else if (remainingTime < 59000) {
                 minElement.innerHTML = "sec";
+            } else if (remainingTime == 59000) {
+                minElement.innerHTML = "min";
+            } else {
+                minElement.innerHTML = "mins";
             }
-
         }, 1000)
     }
 }
@@ -109,11 +110,11 @@ function resumeInterval() {
         const minutes = Math.floor((remainingTime / 1000 / 60) % 60);
         const seconds = Math.floor((remainingTime / 1000) % 60);
         timerElement.innerHTML = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-        remainingTime -= 20000;
+        remainingTime -= 1000;
 
         if (remainingTime < 0) {
             task++;
-                finishedTask.innerHTML = `<span class="p-2 px-3 rounded-md bg-gray-700 text-gray-100 font-extrabold">${task}</span>`;
+            finishedTask.innerHTML = `<span class="p-2 px-3 rounded-md bg-gray-700 text-gray-100 font-extrabold">${task}</span>`;
             clearInterval(timer);
             clearInterval(titleInterval)
             timerElement.innerHTML = "Done!";
@@ -123,8 +124,12 @@ function resumeInterval() {
             clearInterval(estimateInterval);
             timeEstimate.innerHTML = "Begin a new task again?";
             minElement.style.display = "none";
-        } else if (remainingTime < 60000) {
+        } else if (remainingTime < 59000) {
             minElement.innerHTML = "sec";
+        } else if (remainingTime == 59000) {
+            minElement.innerHTML = "min";
+        } else {
+            minElement.innerHTML = "mins";
         }
     }, 1000);
 }
@@ -153,7 +158,7 @@ pauseBtn.addEventListener("click", function () {
     startBtn.style.display = "none";
     pauseBtn.style.display = "none";
     timerElement.classList.add("text-gray-400");
-    minElement.classList.add("text-gray-300");
+    minElement.classList.replace("text-gray-600", "text-gray-300");
     clearInterval(estimateInterval);
     timeEstimate.style.display = "none";
 });
@@ -181,8 +186,8 @@ startAgain.addEventListener("click", function () {
     sliderValue.innerHTML = sliderDuration.value;
     slider.style.display = "flex";
     timerElement.innerHTML = sliderDuration.value;
-    minElement.style.display = "none";
-    startBtn.style.display = "none";
+    minElement.style.display = "none"
+    startBtn.style.display = "block";
     startAgain.style.display = "none";
 });
 
@@ -225,7 +230,8 @@ reset.addEventListener("click", function () {
     clearInterval(estimateInterval);
     clearInterval(titleInterval);
     title.innerHTML = `<span class="text-2xl text-gray-600"><span class="text-blue-600 font-extrabold">Adjust the slider</span><br> to reset the timer!</span>`;
-    timeEstimate.style.display = "none"
+    timeEstimate.style.display = "none";
+    minElement.style.display = "none";
 });
 
 
