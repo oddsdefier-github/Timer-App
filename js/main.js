@@ -44,6 +44,7 @@ setInterval(() => {
 function startTimer() {
     paused = false;
     startAgain.style.display = "none";
+    minElement.style.display = "flex";
 
     if (!paused) {
         clearInterval(timer)
@@ -137,14 +138,21 @@ function resumeInterval() {
 startBtn.addEventListener("click", function () {
     startTimer();
     estimateTime();
-    minElement.style.display = "flex";
+    timerElement.style.display = "block";
     slider.style.display = "none";
     startBtn.style.display = "none"
     pauseBtn.style.display = "block";
     reset.style.display = "none";
     titleInterval = setInterval(() => {
         title.innerHTML = `<span class="text-2xl text-gray-600">You're <span class="text-blue-500">${Math.floor(remainingTime / 60 / 1000)} ${Math.floor(remainingTime / 60 / 1000) <= 1 ? 'min' : 'mins'} </span> closer <br> in finishing your <span class="font-extrabold text-gray-900">Capstone</span>!</span>`
-    }, 0)
+    }, 0);
+    if (remainingTime < 59000) {
+        minElement.innerHTML = "sec";
+    } else if (remainingTime == 59000) {
+        minElement.innerHTML = "min";
+    } else {
+        minElement.innerHTML = "mins";
+    }
 });
 
 pauseBtn.addEventListener("click", function () {
@@ -161,6 +169,13 @@ pauseBtn.addEventListener("click", function () {
     minElement.classList.replace("text-gray-600", "text-gray-300");
     clearInterval(estimateInterval);
     timeEstimate.style.display = "none";
+    if (remainingTime < 59000) {
+        minElement.innerHTML = "sec";
+    } else if (remainingTime == 59000) {
+        minElement.innerHTML = "min";
+    } else {
+        minElement.innerHTML = "mins";
+    }
 });
 
 resumeBtn.addEventListener("click", function () {
@@ -175,7 +190,14 @@ resumeBtn.addEventListener("click", function () {
     minElement.classList.remove("text-gray-300");
     titleInterval = setInterval(() => {
         title.innerHTML = `<span class="text-2xl text-gray-600">You're <span class="text-blue-500">${Math.floor(remainingTime / 60 / 1000)} ${Math.floor(remainingTime / 60 / 1000) <= 1 ? 'min' : 'mins'} </span> closer <br> in finishing your <span class="font-extrabold text-gray-900">Capstone</span>!</span>`
-    }, 0)
+    }, 0);
+    if (remainingTime < 59000) {
+        minElement.innerHTML = "sec";
+    } else if (remainingTime == 59000) {
+        minElement.innerHTML = "min";
+    } else {
+        minElement.innerHTML = "mins";
+    }
 });
 startAgain.addEventListener("click", function () {
     paused = true;
@@ -185,10 +207,11 @@ startAgain.addEventListener("click", function () {
     sliderDuration.value = 5;
     sliderValue.innerHTML = sliderDuration.value;
     slider.style.display = "flex";
-    timerElement.innerHTML = sliderDuration.value;
+    timerElement.style.display = "none";
     minElement.style.display = "none"
     startBtn.style.display = "block";
     startAgain.style.display = "none";
+    //reset all function before proceeding
 });
 
 
@@ -196,6 +219,7 @@ sliderDuration.oninput = function () {
     clearInterval(timer);
     clearInterval(titleInterval);
     paused = true;
+    timerElement.style.display = "block";
     minElement.style.display = "flex";
     startBtn.style.display = "block";
     title.style.display = "block";
@@ -235,5 +259,5 @@ reset.addEventListener("click", function () {
 });
 
 
-
+//function to identify the remaining time if its a sec, min, or minutes
 
