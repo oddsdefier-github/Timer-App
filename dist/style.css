@@ -6,6 +6,13 @@
 body {
 	width: 100%;
 	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+header {
+	width: 100%;
+	flex: 1;
 	display: grid;
 	place-items: center;
 }
@@ -19,11 +26,6 @@ body {
 	margin-bottom: 0.5rem;
 }
 
-.clock-container {
-	position: absolute;
-	top: 2.5%;
-	right: 2.5%;
-}
 #clock {
 	padding: 0.5rem;
 }

@@ -8,20 +8,29 @@
 		<link rel="stylesheet" href="/dist/style.css" />
 		<script src="/js/main.js" defer></script>
 		<link href="/dist/output.css" rel="stylesheet" />
-		<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+		<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon" />
 	</head>
 	<body class="font-inter bg-gray-200">
-		<header>
+		<nav class="w-full px-20 flex justify-between items-center">
+			<div class="p-2">
+				<div class="flex flex-row items-center gap-2">
+					<p class="font-bold text-lg">Finished Task:</p>
+					<p id="finished-task"></p>
+				</div>
+			</div>
 			<div class="clock-container p-2">
 				<p id="clock" class="font-bold text-lg"></p>
 			</div>
+		</nav>
+		<header>
+			<!-- box -->
 			<div class="timer w-[25rem] py-10 rounded-md bg-white shadow-lg border-gray-200" id="box">
 				<h1 class="title text-2xl font-bold text-center mb-5" id="title">
 					Do you need to <br />
-					get something <span class="text-blue-500 font-extrabold">done</span>?
+					<span class="text-blue-600 font-extrabold">get something done</span>?
 				</h1>
 				<div class="flex items-center flex-row gap-2 my-5 w-full h-10 px-10" id="slider">
-					<input type="range" class="w-[80%] bg-blue-500 hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:ring-0" id="duration" min="1" max="30" step="1" />
+					<input type="range" class="w-[80%] bg-blue-500 hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:ring-0" id="duration" min="1" max="60" value="5" step="1" />
 					<span class="p-1 w-[12%] flex justify-center items-center rounded-md bg-gray-200" title="Minutes"><p id="slider-value" class="font-semibold text-sm"></p></span>
 				</div>
 				<div class="my-5 mb-10 h-[5rem] flex justify-center items-center gap-1">
@@ -32,12 +41,13 @@
 					<p id="time-estimate"></p>
 				</div>
 				<button id="start" class="w-[70%] h-8 text-white font-semibold rounded-lg bg-blue-500 hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300">Start</button>
-				<button id="resume" class="hidden w-[70%] h-8 text-white font-semibold rounded-lg bg-gray-300 hover:bg-gray-600 active:bg-gray-700 focus:outline-none focus:ring focus:ring-green-300">Resume</button>
-				<button id="pause" class="hidden w-[70%] h-8 text-white font-semibold rounded-lg bg-red-500 hover:bg-red-600 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-300">Pause</button>
-				<p class="font-bold cursor-pointer hidden" id="reset">reset</p>
+				<button id="resume" class="hidden w-[60%] h-8 text-teal-700 font-semibold rounded-lg border-[1px] border-teal-600 hover:bg-teal-500 hover:text-white active:bg-teal-400 focus:outline-none focus:ring focus:ring-teal-300">Resume</button>
+				<button id="pause" class="hidden w-[60%] h-8 text-red-700 font-semibold rounded-lg border-[1px] border-red-600 hover:bg-red-500 hover:text-white active:bg-red-400 focus:outline-none focus:ring focus:ring-red-300">Pause</button>
+				<button id="start-again" class="hidden w-[60%] h-8 text-gray-700 font-semibold rounded-lg border-[1px] border-gray-600 hover:bg-gray-500 hover:text-white active:bg-gray-400 focus:outline-none focus:ring focus:ring-gray-300">Start Again</button>
+				<p class="font-bold text-gray-400 cursor-pointer hidden hover:text-gray-600" id="reset">reset</p>
 			</div>
 		</header>
-		<footer class="w-full lg:block lg:fixed lg:bottom-0 hidden h-10">
+		<footer class="w-full lg:block hidden">
 			<p class="text-center">©Jeffry James Paner</p>
 		</footer>
 
