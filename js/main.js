@@ -14,6 +14,9 @@ let minElement = document.getElementById("min");
 let timeEstimate = document.getElementById("time-estimate");
 let clockElement = document.getElementById("clock");
 let finishedTask = document.getElementById("finished-task");
+let sentence = document.getElementById("sentence");
+
+let history = document.getElementById("history")
 
 let paused = false;
 let isDone = false;
@@ -26,11 +29,24 @@ sliderValue.innerHTML = sliderDuration.value;
 timerElement.innerHTML = sliderDuration.value;
 
 
-// window.addEventListener('beforeunload', function (e) {
-//     e.preventDefault();
-//     e.returnValue = "";
-// });
+window.addEventListener('beforeunload', function (e) {
+    e.preventDefault();
+    e.returnValue = "";
+});
 
+//current time
+
+function currentTime() {
+    let now = new Date();
+    let hours = now.getHours().toString().padStart(2, "0");
+    let minutes = now.getMinutes().toString().padStart(2, "0");
+    let amOrPm = hours >= 12 ? 'pm' : 'am';
+    hours = (hours % 12) || 12;
+    let time = `${hours}:${minutes} ${amOrPm}`;
+    return time;
+}
+
+//current time
 
 setInterval(() => {
     const now = new Date();
@@ -38,9 +54,10 @@ setInterval(() => {
     const minutes = now.getMinutes().toString().padStart(2, "0");
     const amOrPm = hours >= 12 ? 'pm' : 'am';
     hours = (hours % 12) || 12;
-    const time = `${hours}:${minutes} ${amOrPm}`;
+    let time = `${hours}:${minutes} ${amOrPm}`;
     clockElement.textContent = time;
 }, 0)
+
 
 const emptyTime = () => {
     isDone = true;
@@ -54,7 +71,8 @@ const emptyTime = () => {
         timerElement.innerHTML = "Done!";
         pauseBtn.style.display = "none";
         startAgain.style.display = "block";
-        title.innerHTML = `<span class="text-blue-600">Congratulations!</span> <br> You're one task ahead.`;
+        title.innerHTML = `<span class="text-blue-600">Congratulations!</span> <br> You're ${task} ${task == 1 ? 'task' : 'tasks'} ahead.`;
+        sentence.innerHTML += `<span class="block text-gray-600">Finished <span class="font-bold text-blue-600">${sliderDuration.value} ${sliderDuration.value == 1 ? 'minute' : 'minutes'}</span> task at ${currentTime()}.</span>`;
         timeEstimate.innerHTML = "Begin new task.";
         minElement.style.display = "none";
 
@@ -117,7 +135,7 @@ function startTimer() {
             const minutes = Math.floor((remainingTime / 1000 / 60) % 60);
             const seconds = Math.floor((remainingTime / 1000) % 60);
             timerElement.innerHTML = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-            remainingTime -= 20000;
+            remainingTime -= 1000;
 
             emptyTime();
 
@@ -312,8 +330,14 @@ reset.addEventListener("click", function () {
 });
 
 
-//function to identify the remaining time if its a sec, min, or minutes
-//fix the reset, pause, resume function, much better if you define the repetitive code in a function instead
-//fix the minElement
+let taskHistory = document.getElementById("task-history");
+taskHistory.style.display = "none"
+function showHistory() {
+    if (taskHistory.style.display === "none") {
+        taskHistory.style.display = "block";
+    } else {
+        taskHistory.style.display = "none";
+    }
+};
 
-
+history.addEventListener("click", showHistory);
