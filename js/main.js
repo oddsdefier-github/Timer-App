@@ -16,6 +16,7 @@ let clockElement = document.getElementById("clock");
 let finishedTask = document.getElementById("finished-task");
 
 let paused = false;
+let isDone = false;
 let timer;
 let remainingTime;
 let titleInterval;
@@ -40,8 +41,35 @@ setInterval(() => {
     clockElement.textContent = time;
 }, 0)
 
+const emptyTime = () => {
+    isDone = true;
+    if (remainingTime < 0) {
+        task++;
+        finishedTask.innerHTML = `<span class="p-2 px-3 rounded-md bg-gray-700 text-gray-100 font-extrabold">${task}</span>`;
+        clearInterval(timer);
+        clearInterval(titleInterval);
+        clearInterval(estimateInterval);
+        remainingTime = parseInt(sliderDuration.value) * 60 * 1000;
+        timerElement.innerHTML = "Done!";
+        pauseBtn.style.display = "none";
+        startAgain.style.display = "block";
+        title.innerHTML = `<span class="text-blue-600">Congratulations!</span> <br> You're one task ahead.`;
+        timeEstimate.innerHTML = "Begin new task.";
+        minElement.style.display = "none";
+        canvas.style.display = "flex";
+        initConfetti();
+        render();
+    } else if (remainingTime < 59000) {
+        minElement.innerHTML = "sec";
+    } else if (remainingTime == 59000) {
+        minElement.innerHTML = "min";
+    } else {
+        minElement.innerHTML = "mins";
+    }
+}
 
 function startTimer() {
+    isDone = false;
     paused = false;
     startAgain.style.display = "none";
     minElement.style.display = "flex";
@@ -57,29 +85,12 @@ function startTimer() {
             const seconds = Math.floor((remainingTime / 1000) % 60);
             timerElement.innerHTML = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
             remainingTime -= 1000;
-            if (remainingTime < 0) {
-                task++;
-                finishedTask.innerHTML = `<span class="p-2 px-3 rounded-md bg-gray-700 text-gray-100 font-extrabold">${task}</span>`;
-                clearInterval(timer);
-                clearInterval(titleInterval)
-                timerElement.innerHTML = "Done!";
-                pauseBtn.style.display = "none";
-                startAgain.style.display = "block";
-                title.innerHTML = `<span class="text-blue-600">Congratulations!</span> <br> You're one task ahead.`;
-                clearInterval(estimateInterval);
-                timeEstimate.innerHTML = "Begin a new task again?";
-                minElement.style.display = "none";
-            } else if (remainingTime < 59000) {
-                minElement.innerHTML = "sec";
-            } else if (remainingTime == 59000) {
-                minElement.innerHTML = "min";
-            } else {
-                minElement.innerHTML = "mins";
-            }
+
+            emptyTime();
+
         }, 1000)
     }
 }
-
 
 function estimateTime() {
     timeEstimate.style.display = "block";
@@ -99,118 +110,115 @@ function estimateTime() {
     }
 }
 
-function pauseInterval() {
-    clearInterval(timer)
+function pauseTimer() {
     paused = true;
-}
-
-function resumeInterval() {
-    paused = false;
-    title.style.display = "block";
-    timer = setInterval(() => {
-        const minutes = Math.floor((remainingTime / 1000 / 60) % 60);
-        const seconds = Math.floor((remainingTime / 1000) % 60);
-        timerElement.innerHTML = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-        remainingTime -= 1000;
-
-        if (remainingTime < 0) {
-            task++;
-            finishedTask.innerHTML = `<span class="p-2 px-3 rounded-md bg-gray-700 text-gray-100 font-extrabold">${task}</span>`;
-            clearInterval(timer);
-            clearInterval(titleInterval)
-            timerElement.innerHTML = "Done!";
-            pauseBtn.style.display = "none";
-            startAgain.style.display = "block";
-            title.innerHTML = `<span class="text-blue-600">Congratulations!</span> <br> You're one task ahead.`;
-            clearInterval(estimateInterval);
-            timeEstimate.innerHTML = "Begin a new task again?";
-            minElement.style.display = "none";
-        } else if (remainingTime < 59000) {
-            minElement.innerHTML = "sec";
-        } else if (remainingTime == 59000) {
-            minElement.innerHTML = "min";
-        } else {
-            minElement.innerHTML = "mins";
-        }
-    }, 1000);
-}
-
-startBtn.addEventListener("click", function () {
-    startTimer();
-    estimateTime();
-    timerElement.style.display = "block";
-    slider.style.display = "none";
-    startBtn.style.display = "none"
-    pauseBtn.style.display = "block";
-    reset.style.display = "none";
-    titleInterval = setInterval(() => {
-        title.innerHTML = `<span class="text-2xl text-gray-600">You're <span class="text-blue-500">${Math.floor(remainingTime / 60 / 1000)} ${Math.floor(remainingTime / 60 / 1000) <= 1 ? 'min' : 'mins'} </span> closer <br> in finishing your <span class="font-extrabold text-gray-900">Capstone</span>!</span>`
-    }, 0);
-    if (remainingTime < 59000) {
-        minElement.innerHTML = "sec";
-    } else if (remainingTime == 59000) {
-        minElement.innerHTML = "min";
-    } else {
-        minElement.innerHTML = "mins";
-    }
-});
-
-pauseBtn.addEventListener("click", function () {
-    pauseInterval();
-    box.classList.add("shake");
-    reset.style.display = "block";
+    clearInterval(timer);
     clearInterval(titleInterval);
+    clearInterval(estimateInterval);
+    box.classList.add("shake");
     title.innerHTML = `<span class="text-red-500 text-4xl">Paused</span>`;
     slider.style.display = "none";
-    resumeBtn.style.display = "block";
+    timeEstimate.style.display = "none";
     startBtn.style.display = "none";
     pauseBtn.style.display = "none";
+    resumeBtn.style.display = "block";
+    reset.style.display = "block";
     timerElement.classList.add("text-gray-400");
-    minElement.classList.replace("text-gray-600", "text-gray-300");
-    clearInterval(estimateInterval);
-    timeEstimate.style.display = "none";
-    if (remainingTime < 59000) {
-        minElement.innerHTML = "sec";
-    } else if (remainingTime == 59000) {
-        minElement.innerHTML = "min";
-    } else {
-        minElement.innerHTML = "mins";
-    }
-});
+    minElement.classList.add("text-gray-300");
+}
 
-resumeBtn.addEventListener("click", function () {
-    resumeInterval();
-    reset.style.display = "none";
-    box.classList.remove("shake");
-    slider.style.display = "none";
-    timeEstimate.style.display = "block";
-    resumeBtn.style.display = "none";
-    pauseBtn.style.display = "block";
-    timerElement.classList.remove("text-gray-400")
-    minElement.classList.remove("text-gray-300");
-    titleInterval = setInterval(() => {
-        title.innerHTML = `<span class="text-2xl text-gray-600">You're <span class="text-blue-500">${Math.floor(remainingTime / 60 / 1000)} ${Math.floor(remainingTime / 60 / 1000) <= 1 ? 'min' : 'mins'} </span> closer <br> in finishing your <span class="font-extrabold text-gray-900">Capstone</span>!</span>`
-    }, 0);
+function resumeTimer() {
+    paused = false;
+    if (!paused) {
+        clearInterval(timer)
+        title.style.display = "block";
+        const duration = parseInt(sliderDuration.value) * 60 * 1000; //convert minutes t0 milliseconds
+        remainingTime = duration;
+
+        timer = setInterval(() => {
+            const minutes = Math.floor((remainingTime / 1000 / 60) % 60);
+            const seconds = Math.floor((remainingTime / 1000) % 60);
+            timerElement.innerHTML = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+            remainingTime -= 1000;
+
+            emptyTime();
+
+        }, 1000)
+    }
+}
+
+function checkMin() {
     if (remainingTime < 59000) {
         minElement.innerHTML = "sec";
-    } else if (remainingTime == 59000) {
+    } else if (remainingTime == 60000) {
         minElement.innerHTML = "min";
     } else {
         minElement.innerHTML = "mins";
     }
-});
-startAgain.addEventListener("click", function () {
+    if (sliderDuration.value == 1) {
+        minElement.innerHTML = "min";
+    } else if (sliderDuration.value < 1) {
+        minElement.innerHTML = "sec";
+    } else {
+        minElement.innerHTML = "mins";
+    }
+}
+function titleDisplay() {
+    titleInterval = setInterval(() => {
+        title.innerHTML = `<span class="text-2xl text-gray-600">You're <span class="text-blue-500">${Math.round(remainingTime / 60 / 1000)} ${Math.floor(remainingTime / 60 / 1000) <= 1 ? 'min' : 'mins'} </span> closer <br> in finishing your <span class="font-extrabold text-gray-900">Capstone</span>!</span>`
+    }, 0);
+}
+
+function startAgainTimer() {
     paused = true;
+    checkMin();
     clearInterval(timer);
     clearInterval(titleInterval);
     title.innerHTML = `Begin <span class="text-blue-600 font-extrabold">new task</span>.`;
     sliderDuration.value = 5;
     sliderValue.innerHTML = sliderDuration.value;
     slider.style.display = "flex";
-    timerElement.style.display = "none";
-    minElement.style.display = "none"
+    timerElement.innerHTML = `<span class="text-7xl">${sliderDuration.value}</span>`;
+    minElement.style.display = "flex";
     startBtn.style.display = "block";
     startAgain.style.display = "none";
+}
+//start
+startBtn.addEventListener("click", function () {
+    startTimer();
+    estimateTime();
+    checkMin();
+    titleDisplay();
+    slider.style.display = "none";
+    startBtn.style.display = "none"
+    pauseBtn.style.display = "block";
+    timerElement.style.display = "block";
+    reset.style.display = "none";
+
+
+});
+//pause
+pauseBtn.addEventListener("click", function () {
+    pauseTimer();
+    checkMin();
+});
+//resume
+resumeBtn.addEventListener("click", function () {
+    resumeTimer();
+    titleDisplay();
+    checkMin();
+    reset.style.display = "none";
+    slider.style.display = "none";
+    resumeBtn.style.display = "none";
+    timeEstimate.style.display = "block";
+    pauseBtn.style.display = "block";
+    timerElement.classList.remove("text-gray-400");
+    minElement.classList.remove("text-gray-300");
+    box.classList.remove("shake");
+});
+
+startAgain.addEventListener("click", function () {
+    startAgainTimer();
     //reset all function before proceeding
 });
 
@@ -225,39 +233,47 @@ sliderDuration.oninput = function () {
     title.style.display = "block";
     pauseBtn.style.display = "none";
     resumeBtn.style.display = "none";
-    title.innerHTML = `<span class="text-2xl">Setting the timer...</span>`;
+    title.innerHTML = `<span class="text-2xl">Set the <span class="font-extrabold text-blue-600">timer</span>.</span>`;
     timerElement.classList.remove("text-gray-400");
     minElement.classList.remove("text-gray-300");
     sliderValue.innerHTML = this.value;
     timerElement.innerHTML = this.value;
+    timeEstimate.innerHTML = "Begin new task.";
     if (this.value == 1) {
         minElement.innerHTML = "min"
     } else {
         minElement.innerHTML = "mins"
     }
-    timeEstimate.style.display = "none"
 }
 
 
 function resetTimer() {
-    slider.style.display = "flex";
-    timerElement.innerHTML = "0:00";
-    resumeBtn.style.display = "none";
-}
-
-reset.addEventListener("click", function () {
     paused = true;
-    box.classList.remove("shake");
-    resetTimer();
     clearInterval(timer);
-    reset.style.display = "none";
     clearInterval(estimateInterval);
     clearInterval(titleInterval);
-    title.innerHTML = `<span class="text-2xl text-gray-600"><span class="text-blue-600 font-extrabold">Adjust the slider</span><br> to reset the timer!</span>`;
-    timeEstimate.style.display = "none";
-    minElement.style.display = "none";
+    checkMin();
+    box.classList.remove("shake");
+    title.innerHTML = `<span class="text-2xl text-gray-600"><span class="text-blue-600 font-extrabold">Adjust the slider</span><br> to reset the timer.</span>`;
+    timeEstimate.style.display = "block";
+    timeEstimate.innerHTML = "Begin new task.";
+    slider.style.display = "flex";
+    sliderDuration.value = 5;
+    sliderValue.innerHTML = sliderDuration.value;
+    timerElement.classList.remove("text-gray-400");
+    minElement.classList.remove("text-gray-300");
+    timerElement.innerHTML = sliderDuration.value;
+    minElement.style.display = "flex";
+    resumeBtn.style.display = "none";
+    reset.style.display = "none";
+    startBtn.style.display = "block";
+}
+reset.addEventListener("click", function () {
+    resetTimer();
+
 });
 
 
 //function to identify the remaining time if its a sec, min, or minutes
-
+//fix the reset, pause, resume function, much better if you define the repetitive code in a function instead
+//fix the minElement

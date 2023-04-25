@@ -11,15 +11,16 @@
 		<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon" />
 	</head>
 	<body class="font-inter bg-gray-200">
-		<nav class="w-full md:px-20 px-5 flex justify-between items-center">
+		<canvas class="confetti hidden" id="canvas"></canvas>
+		<nav class="w-full md:px-20 px-3 flex justify-between items-center">
 			<div class="p-2">
 				<div class="flex flex-row items-center gap-2">
-					<p class="font-bold text-lg">Finished Task:</p>
+					<p class="font-bold text-base md:text-lg">Finished Task:</p>
 					<p id="finished-task"></p>
 				</div>
 			</div>
 			<div class="clock-container p-2">
-				<p id="clock" class="font-bold text-lg"></p>
+				<p id="clock" class="font-bold text-base md:text-lg"></p>
 			</div>
 		</nav>
 		<header>
@@ -35,7 +36,7 @@
 				</div>
 				<div class="my-5 mb-10 h-[5rem] flex justify-center items-center gap-1">
 					<p id="timer" class="text-6xl font-semibold">.....</p>
-					<p id="min" class="font-semibold text-gray-600 text-lg mt-5">mins</p>
+					<p id="min" class="font-semibold text-lg mt-5">mins</p>
 				</div>
 				<div>
 					<p id="time-estimate"></p>
@@ -52,5 +53,8 @@
 		</footer>
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+		<script src="./js/confetti.js"></script>
+		
 	</body>
+	
 </html>
