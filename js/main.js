@@ -96,6 +96,7 @@ function estimateTime() {
     timeEstimate.style.display = "block";
     paused = false;
     if (!paused) {
+        clearInterval(estimateInterval);
         estimateInterval = setInterval(() => {
             const date = new Date();
             const minToAdd = parseInt(remainingTime);
@@ -118,7 +119,8 @@ function pauseTimer() {
     box.classList.add("shake");
     title.innerHTML = `<span class="text-red-500 text-4xl">Paused</span>`;
     slider.style.display = "none";
-    timeEstimate.style.display = "none";
+    timeEstimate.style.display = "block";
+    timeEstimate.innerHTML = `<span class="text-gray-400">Total of <span class="font-bold text-gray-600">${sliderDuration.value} minutes</span>.</span>`
     startBtn.style.display = "none";
     pauseBtn.style.display = "none";
     resumeBtn.style.display = "block";
@@ -129,11 +131,11 @@ function pauseTimer() {
 
 function resumeTimer() {
     paused = false;
+    clearInterval(estimateInterval);
+    estimateTime();
     if (!paused) {
         clearInterval(timer)
         title.style.display = "block";
-        const duration = parseInt(sliderDuration.value) * 60 * 1000; //convert minutes t0 milliseconds
-        remainingTime = duration;
 
         timer = setInterval(() => {
             const minutes = Math.floor((remainingTime / 1000 / 60) % 60);
@@ -165,7 +167,7 @@ function checkMin() {
 }
 function titleDisplay() {
     titleInterval = setInterval(() => {
-        title.innerHTML = `<span class="text-2xl text-gray-600">You're <span class="text-blue-500">${Math.round(remainingTime / 60 / 1000)} ${Math.floor(remainingTime / 60 / 1000) <= 1 ? 'min' : 'mins'} </span> closer <br> in finishing your <span class="font-extrabold text-gray-900">Capstone</span>!</span>`
+        title.innerHTML = `<span class="text-2xl text-gray-600">You're <span class="text-blue-500">${Math.round(remainingTime / 60 / 1000)} ${Math.floor(remainingTime / 60 / 1000) <= 1 ? 'min' : 'mins'} </span> closer <br> in finishing <span class="font-extrabold text-gray-900">Capstone</span>!</span>`
     }, 0);
 }
 
@@ -173,6 +175,7 @@ function startAgainTimer() {
     paused = true;
     checkMin();
     clearInterval(timer);
+    clearInterval(estimateInterval);
     clearInterval(titleInterval);
     title.innerHTML = `Begin <span class="text-blue-600 font-extrabold">new task</span>.`;
     sliderDuration.value = 5;
@@ -185,6 +188,7 @@ function startAgainTimer() {
 }
 //start
 startBtn.addEventListener("click", function () {
+    clearInterval(estimateInterval);
     startTimer();
     estimateTime();
     checkMin();
@@ -226,14 +230,15 @@ startAgain.addEventListener("click", function () {
 sliderDuration.oninput = function () {
     clearInterval(timer);
     clearInterval(titleInterval);
+    clearInterval(estimateInterval);
     paused = true;
-    timerElement.style.display = "block";
-    minElement.style.display = "flex";
-    startBtn.style.display = "block";
-    title.style.display = "block";
+    title.innerHTML = `<span class="text-2xl">Set the <span class="font-extrabold text-blue-600">timer</span>.</span>`;
     pauseBtn.style.display = "none";
     resumeBtn.style.display = "none";
-    title.innerHTML = `<span class="text-2xl">Set the <span class="font-extrabold text-blue-600">timer</span>.</span>`;
+    timerElement.style.display = "block";
+    startBtn.style.display = "block";
+    title.style.display = "block";
+    minElement.style.display = "flex";
     timerElement.classList.remove("text-gray-400");
     minElement.classList.remove("text-gray-300");
     sliderValue.innerHTML = this.value;
@@ -254,9 +259,9 @@ function resetTimer() {
     clearInterval(titleInterval);
     checkMin();
     box.classList.remove("shake");
-    title.innerHTML = `<span class="text-2xl text-gray-600"><span class="text-blue-600 font-extrabold">Adjust the slider</span><br> to reset the timer.</span>`;
+    title.innerHTML = `<span class="text-2xl text-gray-600">Adjust the slider<br> to <span class="text-red-600 font-extrabold">reset</span> the timer.</span>`;
     timeEstimate.style.display = "block";
-    timeEstimate.innerHTML = "Begin new task.";
+    timeEstimate.innerHTML = "Reset the timer.";
     slider.style.display = "flex";
     sliderDuration.value = 5;
     sliderValue.innerHTML = sliderDuration.value;
