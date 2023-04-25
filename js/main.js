@@ -135,7 +135,7 @@ function startTimer() {
             const minutes = Math.floor((remainingTime / 1000 / 60) % 60);
             const seconds = Math.floor((remainingTime / 1000) % 60);
             timerElement.innerHTML = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-            remainingTime -= 200000;
+            remainingTime -= 1000;
 
             emptyTime();
 
