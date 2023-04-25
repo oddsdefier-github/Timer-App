@@ -27,7 +27,7 @@ let estimateInterval;
 let task = 0;
 sliderValue.innerHTML = sliderDuration.value;
 timerElement.innerHTML = sliderDuration.value;
-
+finishedTask.innerHTML = `<span class="p-2 px-3 rounded-md bg-gray-700 text-gray-100 font-extrabold">${task}</span>`;
 
 window.addEventListener('beforeunload', function (e) {
     e.preventDefault();
@@ -314,7 +314,7 @@ function resetTimer() {
     timeEstimate.style.display = "block";
     timeEstimate.innerHTML = "Reset the timer.";
     slider.style.display = "flex";
-    sliderDuration.value = 5;
+    sliderDuration.value = 15;
     sliderValue.innerHTML = sliderDuration.value;
     timerElement.classList.remove("text-gray-400");
     minElement.classList.remove("text-gray-300");
