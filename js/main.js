@@ -25,6 +25,7 @@ let task = 0;
 sliderValue.innerHTML = sliderDuration.value;
 timerElement.innerHTML = sliderDuration.value;
 
+
 // window.addEventListener('beforeunload', function (e) {
 //     e.preventDefault();
 //     e.returnValue = "";
@@ -56,9 +57,9 @@ const emptyTime = () => {
         title.innerHTML = `<span class="text-blue-600">Congratulations!</span> <br> You're one task ahead.`;
         timeEstimate.innerHTML = "Begin new task.";
         minElement.style.display = "none";
-        // canvas.style.display = "flex";
-        // initConfetti();
-        // render();
+        canvas.style.display = "flex";
+        initConfetti();
+        render();
     } else if (remainingTime < 59000) {
         minElement.innerHTML = "sec";
     } else if (remainingTime == 59000) {
