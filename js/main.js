@@ -56,9 +56,9 @@ const emptyTime = () => {
         title.innerHTML = `<span class="text-blue-600">Congratulations!</span> <br> You're one task ahead.`;
         timeEstimate.innerHTML = "Begin new task.";
         minElement.style.display = "none";
-        canvas.style.display = "flex";
-        initConfetti();
-        render();
+        // canvas.style.display = "flex";
+        // initConfetti();
+        // render();
     } else if (remainingTime < 59000) {
         minElement.innerHTML = "sec";
     } else if (remainingTime == 59000) {
@@ -282,3 +282,5 @@ reset.addEventListener("click", function () {
 //function to identify the remaining time if its a sec, min, or minutes
 //fix the reset, pause, resume function, much better if you define the repetitive code in a function instead
 //fix the minElement
+
+
