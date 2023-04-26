@@ -25,7 +25,7 @@ header {
 	padding: 0.5rem;
 }
 
-button:active {
+.action-btn:active {
 	transform: translateX(20%);
 	transition: 2s;
 }
@@ -64,4 +64,3 @@ button:active {
 		transform: rotate(4deg);
 	}
 }
-

@@ -1,39 +1,51 @@
-let title = document.getElementById("title");
-let timeDisplay = document.getElementById("time");
-let startBtn = document.getElementById("start");
-let resumeBtn = document.getElementById("resume");
-let pauseBtn = document.getElementById("pause");
-let startAgain = document.getElementById("start-again");
-let slider = document.getElementById("slider");
-let sliderDuration = document.getElementById("duration");
-let sliderValue = document.getElementById("slider-value");
-let box = document.getElementById("box");
-let reset = document.getElementById("reset");
-let timerElement = document.getElementById("timer");
-let minElement = document.getElementById("min");
-let timeEstimate = document.getElementById("time-estimate");
-let clockElement = document.getElementById("clock");
-let finishedTask = document.getElementById("finished-task");
-let sentence = document.getElementById("sentence");
-let history = document.getElementById("history");
-const audioElement = new Audio("achievement-completed.wav"); 
-let paused = false;
+const box = document.getElementById("box");
+const title = document.getElementById("title");
+const timeDisplay = document.getElementById("time"); //actual time
+const slider = document.getElementById("slider");
+const sliderDuration = document.getElementById("duration");
+const sliderValue = document.getElementById("slider-value");
+const timerElement = document.getElementById("timer");
+const startBtn = document.getElementById("start");
+const resumeBtn = document.getElementById("resume");
+const pauseBtn = document.getElementById("pause");
+const reset = document.getElementById("reset");
+const startAgain = document.getElementById("start-again");
+const minElement = document.getElementById("min");
+const timeEstimate = document.getElementById("time-estimate");
+const clockElement = document.getElementById("clock");
+const finishedTask = document.getElementById("finished-task");
+const sentence = document.getElementById("sentence");
+const taskHistory = document.getElementById("task-history");
+const header = document.querySelector("header");
+const noHistoryMsg = document.getElementById("no-history");
+const history = document.getElementById("history");
+const audioElement = new Audio("achievement-completed.wav");
+const breakTime = document.getElementById("break-time");
+
+const lock = document.getElementById("lock");
+let btnChild = document.querySelector("#break-time > *")
 let timer;
 let remainingTime;
 let titleInterval;
 let estimateInterval;
 let task = 0;
-let num = 1000;
+let num = 20000;
+//confetti
+let count = 270;
+let defaults = {
+    origin: { y: 0.8 }
+};
+//confetti
 sliderValue.innerHTML = sliderDuration.value;
 timerElement.innerHTML = sliderDuration.value;
-
 finishedTask.innerHTML = `<span class="p-2 px-3 rounded-md bg-gray-700 text-gray-100 font-extrabold">${task}</span>`;
+breakTime.style.display = "none";
 
-window.addEventListener('beforeunload', function (e) {
-    e.preventDefault();
-    e.returnValue = "";
-});
-
+// window.addEventListener('beforeunload', function (e) {
+//     e.preventDefault();
+//     e.returnValue = "";
+// });
+let timeData = [];
 
 let currentTime = () => { //current time
     let now = new Date();
@@ -44,8 +56,6 @@ let currentTime = () => { //current time
     let time = `${hours}:${minutes} ${amOrPm}`;
     return time;
 }
-
-
 
 setInterval(() => {
     const now = new Date();
@@ -64,11 +74,11 @@ let displayFinished = () => {
 }
 
 const emptyTime = () => {
-
     if (remainingTime < 0) {
         task++;
         finishedTask.innerHTML = `<span class="p-2 px-3 rounded-md bg-gray-700 text-gray-100 font-extrabold">${task}</span>`;
         audioElement.play();
+        timeData.push(parseInt(sliderDuration.value));
         clearInterval(timer);
         clearInterval(titleInterval);
         clearInterval(estimateInterval);
@@ -83,12 +93,10 @@ const emptyTime = () => {
         minElement.style.display = "none";
         displayFinished();
         wrapper();
+        checkSum();
+        console.log(timeData);
+        console.log(checkSum());
         //confetti
-        var count = 250;
-        var defaults = {
-            origin: { y: 0.8 }
-        };
-
         function fire(particleRatio, opts) {
             confetti(Object.assign({}, defaults, opts, {
                 particleCount: Math.floor(count * particleRatio)
@@ -150,6 +158,7 @@ function startTimer() {
         }, 1000)
     }
 }
+
 
 function estimateTime() {
     timeEstimate.style.display = "block";
@@ -224,7 +233,8 @@ function checkMin() {
         minElement.innerHTML = "mins";
     }
 }
-function titleDisplay() {
+
+let titleDisplay = () => {
     titleInterval = setInterval(() => {
         title.innerHTML = `<span class="text-2xl text-gray-600">You're <span class="text-blue-500">${Math.round(remainingTime / 60 / 1000)} ${Math.floor(remainingTime / 60 / 1000) <= 1 ? 'min' : 'mins'} </span> closer <br> in finishing <span class="font-extrabold text-gray-900">Capstone</span>!</span>`
     }, 0);
@@ -257,8 +267,6 @@ startBtn.addEventListener("click", function () {
     pauseBtn.style.display = "block";
     timerElement.style.display = "block";
     reset.style.display = "none";
-
-
 });
 //pause
 pauseBtn.addEventListener("click", function () {
@@ -282,7 +290,6 @@ resumeBtn.addEventListener("click", function () {
 
 startAgain.addEventListener("click", function () {
     startAgainTimer();
-    //reset all function before proceeding
 });
 
 
@@ -309,7 +316,6 @@ sliderDuration.oninput = function () {
         minElement.innerHTML = "mins"
     }
 }
-
 
 function resetTimer() {
     paused = true;
@@ -338,15 +344,11 @@ reset.addEventListener("click", function () {
 });
 
 
-let taskHistory = document.getElementById("task-history");
-let header = document.querySelector("header");
-let noHistoryMsg = document.getElementById("no-history");
-taskHistory.style.display = "none";
+taskHistory.style.display = "block";
 function showHistory() {
     if (taskHistory.style.display === "none") {
         taskHistory.style.display = "block";
         if (task == 0) {
-
             noHistoryMsg.style.display = "inline-block"
         } else {
             noHistoryMsg.style.display = "none"
@@ -356,7 +358,6 @@ function showHistory() {
         noHistoryMsg.style.display = "none"
     }
 };
-
 history.addEventListener("click", showHistory);
 
 
@@ -372,4 +373,31 @@ let wrapper = () => {
         taskHistory.classList.remove("h-[5rem]", "overflow-y-scroll", "lg:h-auto", "lg:overflow-hidden", "snap-mandatory", "snap-y");
         sentence.classList.remove("snap-end")
     }
+}
+
+let checkSum = () => {
+    let sum = 0;
+    for (let x of timeData) {
+        sum += x;
+    };
+    if (sum >= 1 && sum < 15) {
+        breakTime.style.display = "flex";
+    } else if (sum >= 15) {
+        breakTimeShow();
+    }
+    return sum;
+}
+let breakTimeShow = () => {
+    breakTime.style.display = "flex";
+    breakTime.classList.add("group", "hover:border-gray-600", "cursor-pointer");
+    breakTime.classList.remove("cursor-help");
+    breakTime.removeAttribute("disabled");
+    breakTime.removeAttribute("title");
+    btnChild.classList.add("group-hover:text-gray-600");
+    lock.style.display = "none";
+
+}
+
+let startBreak = () => {
+
 }
