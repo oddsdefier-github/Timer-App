@@ -780,19 +780,14 @@ video {
   margin: 1.25rem;
 }
 
-.my-5 {
-  margin-top: 1.25rem;
-  margin-bottom: 1.25rem;
-}
-
-.my-1 {
-  margin-top: 0.25rem;
-  margin-bottom: 0.25rem;
-}
-
 .my-2 {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
+}
+
+.my-5 {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
 }
 
 .mb-10 {
@@ -819,6 +814,10 @@ video {
   margin-top: 1.25rem;
 }
 
+.mt-10 {
+  margin-top: 2.5rem;
+}
+
 .block {
   display: block;
 }
@@ -843,16 +842,12 @@ video {
   height: 2rem;
 }
 
-.h-\[3rem\] {
-  height: 3rem;
-}
-
 .h-\[5rem\] {
   height: 5rem;
 }
 
-.h-screen {
-  height: 100vh;
+.h-\[7\.5rem\] {
+  height: 7.5rem;
 }
 
 .h-fit {
@@ -860,8 +855,8 @@ video {
   height: fit-content;
 }
 
-.h-\[7\.5rem\] {
-  height: 7.5rem;
+.h-screen {
+  height: 100vh;
 }
 
 .h-\[7rem\] {
@@ -908,20 +903,12 @@ video {
   --tw-scroll-snap-strictness: mandatory;
 }
 
-.snap-proximity {
-  --tw-scroll-snap-strictness: proximity;
-}
-
 .snap-start {
   scroll-snap-align: start;
 }
 
 .snap-end {
   scroll-snap-align: end;
-}
-
-.snap-center {
-  scroll-snap-align: center;
 }
 
 .flex-row {
@@ -952,10 +939,6 @@ video {
   gap: 0.5rem;
 }
 
-.overflow-auto {
-  overflow: auto;
-}
-
 .overflow-y-scroll {
   overflow-y: scroll;
 }
@@ -970,6 +953,18 @@ video {
 
 .border-\[1px\] {
   border-width: 1px;
+}
+
+.border {
+  border-width: 1px;
+}
+
+.border-t {
+  border-top-width: 1px;
+}
+
+.border-b {
+  border-bottom-width: 1px;
 }
 
 .border-gray-200 {
@@ -990,6 +985,26 @@ video {
 .border-teal-600 {
   --tw-border-opacity: 1;
   border-color: rgb(13 148 136 / var(--tw-border-opacity));
+}
+
+.border-gray-700 {
+  --tw-border-opacity: 1;
+  border-color: rgb(55 65 81 / var(--tw-border-opacity));
+}
+
+.border-gray-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(209 213 219 / var(--tw-border-opacity));
+}
+
+.border-gray-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(107 114 128 / var(--tw-border-opacity));
+}
+
+.border-gray-400 {
+  --tw-border-opacity: 1;
+  border-color: rgb(156 163 175 / var(--tw-border-opacity));
 }
 
 .bg-blue-500 {
@@ -1900,11 +1915,6 @@ video {
 
   .lg\:h-auto {
     height: auto;
-  }
-
-  .lg\:h-max {
-    height: -moz-max-content;
-    height: max-content;
   }
 
   .lg\:w-\[25rem\] {

@@ -58,7 +58,8 @@ setInterval(() => {
 
 
 let displayFinished = () => {
-    sentence.innerHTML += `<span class="block text-gray-600 my-2">Finished <span class="font-bold text-blue-600">${sliderDuration.value} ${sliderDuration.value == 1 ? 'minute' : 'minutes'}</span> task at ${currentTime()}.</span>`;
+    let data = `<span class="block text-gray-600 my-2">Finished <span class="font-bold text-blue-600">${sliderDuration.value} ${sliderDuration.value == 1 ? 'minute' : 'minutes'}</span> task at ${currentTime()}.</span>`
+    sentence.innerHTML += data;
 }
 
 const emptyTime = () => {
