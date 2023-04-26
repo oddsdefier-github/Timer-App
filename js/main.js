@@ -16,6 +16,7 @@ let clockElement = document.getElementById("clock");
 let finishedTask = document.getElementById("finished-task");
 let sentence = document.getElementById("sentence");
 let history = document.getElementById("history");
+const audioElement = new Audio("achievement-completed.wav"); 
 let paused = false;
 let timer;
 let remainingTime;
@@ -67,6 +68,7 @@ const emptyTime = () => {
     if (remainingTime < 0) {
         task++;
         finishedTask.innerHTML = `<span class="p-2 px-3 rounded-md bg-gray-700 text-gray-100 font-extrabold">${task}</span>`;
+        audioElement.play();
         clearInterval(timer);
         clearInterval(titleInterval);
         clearInterval(estimateInterval);
@@ -81,7 +83,6 @@ const emptyTime = () => {
         minElement.style.display = "none";
         displayFinished();
         wrapper();
-        console.log(task)
         //confetti
         var count = 250;
         var defaults = {
