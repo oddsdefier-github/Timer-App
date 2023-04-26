@@ -15,28 +15,26 @@ let timeEstimate = document.getElementById("time-estimate");
 let clockElement = document.getElementById("clock");
 let finishedTask = document.getElementById("finished-task");
 let sentence = document.getElementById("sentence");
-
-let history = document.getElementById("history")
-
+let history = document.getElementById("history");
 let paused = false;
-let isDone = false;
 let timer;
 let remainingTime;
 let titleInterval;
 let estimateInterval;
 let task = 0;
+let num = 20000;
 sliderValue.innerHTML = sliderDuration.value;
 timerElement.innerHTML = sliderDuration.value;
+
 finishedTask.innerHTML = `<span class="p-2 px-3 rounded-md bg-gray-700 text-gray-100 font-extrabold">${task}</span>`;
 
-window.addEventListener('beforeunload', function (e) {
-    e.preventDefault();
-    e.returnValue = "";
-});
+// window.addEventListener('beforeunload', function (e) {
+//     e.preventDefault();
+//     e.returnValue = "";
+// });
 
-//current time
 
-function currentTime() {
+let currentTime = () => { //current time
     let now = new Date();
     let hours = now.getHours().toString().padStart(2, "0");
     let minutes = now.getMinutes().toString().padStart(2, "0");
@@ -46,7 +44,7 @@ function currentTime() {
     return time;
 }
 
-//current time
+
 
 setInterval(() => {
     const now = new Date();
@@ -59,8 +57,12 @@ setInterval(() => {
 }, 0)
 
 
+let displayFinished = () => {
+    sentence.innerHTML += `<span class="block text-gray-600 my-2">Finished <span class="font-bold text-blue-600">${sliderDuration.value} ${sliderDuration.value == 1 ? 'minute' : 'minutes'}</span> task at ${currentTime()}.</span>`;
+}
+
 const emptyTime = () => {
-    isDone = true;
+
     if (remainingTime < 0) {
         task++;
         finishedTask.innerHTML = `<span class="p-2 px-3 rounded-md bg-gray-700 text-gray-100 font-extrabold">${task}</span>`;
@@ -72,10 +74,14 @@ const emptyTime = () => {
         pauseBtn.style.display = "none";
         startAgain.style.display = "block";
         title.innerHTML = `<span class="text-blue-600">Congratulations!</span> <br> You're ${task} ${task == 1 ? 'task' : 'tasks'} ahead.`;
-        sentence.innerHTML += `<span class="block text-gray-600">Finished <span class="font-bold text-blue-600">${sliderDuration.value} ${sliderDuration.value == 1 ? 'minute' : 'minutes'}</span> task at ${currentTime()}.</span>`;
+        noHistoryMsg.style.display = "none"
+        sentence.classList.add("snap-end")
         timeEstimate.innerHTML = "Begin new task.";
         minElement.style.display = "none";
-
+        displayFinished();
+        wrapper();
+        console.log(task)
+        //confetti
         var count = 250;
         var defaults = {
             origin: { y: 0.8 }
@@ -109,6 +115,7 @@ const emptyTime = () => {
             spread: 120,
             startVelocity: 45,
         });
+        //confetti
 
     } else if (remainingTime < 59000) {
         minElement.innerHTML = "sec";
@@ -120,7 +127,6 @@ const emptyTime = () => {
 }
 
 function startTimer() {
-    isDone = false;
     paused = false;
     startAgain.style.display = "none";
     minElement.style.display = "flex";
@@ -135,7 +141,7 @@ function startTimer() {
             const minutes = Math.floor((remainingTime / 1000 / 60) % 60);
             const seconds = Math.floor((remainingTime / 1000) % 60);
             timerElement.innerHTML = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-            remainingTime -= 1000;
+            remainingTime -= num;
 
             emptyTime();
 
@@ -331,13 +337,37 @@ reset.addEventListener("click", function () {
 
 
 let taskHistory = document.getElementById("task-history");
-taskHistory.style.display = "none"
+let header = document.querySelector("header");
+let noHistoryMsg = document.getElementById("no-history");
+taskHistory.style.display = "none";
 function showHistory() {
     if (taskHistory.style.display === "none") {
         taskHistory.style.display = "block";
+        if (task == 0) {
+
+            noHistoryMsg.style.display = "inline-block"
+        } else {
+            noHistoryMsg.style.display = "none"
+        }
     } else {
         taskHistory.style.display = "none";
+        noHistoryMsg.style.display = "none"
     }
 };
 
 history.addEventListener("click", showHistory);
+
+
+let wrapper = () => {
+    const headerWrapper = document.getElementById("header-wrapper");
+    const body = document.querySelector("body")
+    if (task >= 4) {
+        headerWrapper.classList.add("lg:flex");
+        taskHistory.classList.add("h-[7rem]", "overflow-y-scroll", "lg:h-auto", "lg:overflow-hidden", "snap-mandatory", "snap-y");
+        sentence.classList.add("snap-end")
+    } else {
+        headerWrapper.classList.remove("lg:flex");
+        taskHistory.classList.remove("h-[5rem]", "overflow-y-scroll", "lg:h-auto", "lg:overflow-hidden", "snap-mandatory", "snap-y");
+        sentence.classList.remove("snap-end")
+    }
+}
