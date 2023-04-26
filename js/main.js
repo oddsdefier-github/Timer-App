@@ -22,16 +22,16 @@ let remainingTime;
 let titleInterval;
 let estimateInterval;
 let task = 0;
-let num = 20000;
+let num = 1000;
 sliderValue.innerHTML = sliderDuration.value;
 timerElement.innerHTML = sliderDuration.value;
 
 finishedTask.innerHTML = `<span class="p-2 px-3 rounded-md bg-gray-700 text-gray-100 font-extrabold">${task}</span>`;
 
-// window.addEventListener('beforeunload', function (e) {
-//     e.preventDefault();
-//     e.returnValue = "";
-// });
+window.addEventListener('beforeunload', function (e) {
+    e.preventDefault();
+    e.returnValue = "";
+});
 
 
 let currentTime = () => { //current time
