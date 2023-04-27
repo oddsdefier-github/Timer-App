@@ -21,15 +21,17 @@ const noHistoryMsg = document.getElementById("no-history");
 const history = document.getElementById("history");
 const audioElement = new Audio("achievement-completed.wav");
 const breakTime = document.getElementById("break-time");
+const breakInit = document.getElementById("start-break");
 
 const lock = document.getElementById("lock");
 let btnChild = document.querySelector("#break-time > *")
+let doTask = document.getElementById("do-task");
 let timer;
 let remainingTime;
 let titleInterval;
 let estimateInterval;
 let task = 0;
-let num = 20000;
+let num = 1000;
 //confetti
 let count = 270;
 let defaults = {
@@ -70,6 +72,11 @@ setInterval(() => {
 
 let displayFinished = () => {
     let data = `<span class="block text-gray-600 my-2">Finished <span class="font-bold text-blue-600">${sliderDuration.value} ${sliderDuration.value == 1 ? 'minute' : 'minutes'}</span> task at ${currentTime()}.</span>`
+    sentence.innerHTML += data;
+}
+
+let displayBreak = () => {
+    let data = `<span class="block text-gray-600 my-2">Took a <span class="font-bold text-blue-600">${sliderDuration.value} minutes</span> break at ${currentTime()}.</span>`
     sentence.innerHTML += data;
 }
 
@@ -397,7 +404,124 @@ let breakTimeShow = () => {
     lock.style.display = "none";
 
 }
-
+let totalBreak = 0;
+let breakTimeInit;
 let startBreak = () => {
+    let remainingBreak;
+    clearInterval(breakTimeInit);
+    title.style.display = "block";
+    title.innerHTML = `<span class="text-2xl">You ${totalBreak <= 1 ? 'only' : 'already'} did <span class="font-extrabold text-blue-600">${totalBreak} Break</span>.</span>`;
+    startAgain.style.display = "none";
+    timeEstimate.innerHTML = "Sharpen your axe by resting.";
+    const breakDuration = parseInt(sliderDuration.value) * 60 * 1000; //convert minutes t0 milliseconds
+    remainingBreak = breakDuration;
 
+    breakTimeInit = setInterval(() => {
+        const minutes = Math.floor((remainingBreak / 1000 / 60) % 60);
+        const seconds = Math.floor((remainingBreak / 1000) % 60);
+        timerElement.innerHTML = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+        remainingBreak -= 20000;
+
+        doneBreak();
+        checkMin();
+
+    }, 1000);
+
+    let doneBreak = () => {
+        if (remainingBreak < 0) {
+            totalBreak++
+            clearInterval(breakTimeInit);
+            clearInterval(titleInterval);
+            clearInterval(estimateInterval);
+            displayBreak();
+            audioElement.play();
+            startAgain.style.display = "block";
+            startAgain.innerHTML = "Do the Task";
+            breakInit.style.display = "none";
+            title.innerHTML = `<span class="text-blue-600">Times up!</span>`;
+            timerElement.innerHTML = "Done!";
+            timeEstimate.innerHTML = "Begin your task.";
+            minElement.style.display = "none";
+
+            //confetti
+            function fire(particleRatio, opts) {
+                confetti(Object.assign({}, defaults, opts, {
+                    particleCount: Math.floor(count * particleRatio)
+                }));
+            }
+
+            fire(0.25, {
+                spread: 26,
+                startVelocity: 55,
+            });
+            fire(0.2, {
+                spread: 60,
+            });
+            fire(0.35, {
+                spread: 100,
+                decay: 0.91,
+                scalar: 0.8
+            });
+            fire(0.1, {
+                spread: 120,
+                startVelocity: 25,
+                decay: 0.92,
+                scalar: 1.2
+            });
+            fire(0.1, {
+                spread: 120,
+                startVelocity: 45,
+            });
+            //confetti
+
+        } else if (remainingTime < 59000) {
+            minElement.innerHTML = "sec";
+        } else if (remainingTime == 59000) {
+            minElement.innerHTML = "min";
+        } else {
+            minElement.innerHTML = "mins";
+        }
+    }
 }
+breakInit.addEventListener("click", function () {
+    clearInterval(breakTimeInit);
+    startBreak();
+    checkMin();
+    breakInit.style.display = "none";
+})
+breakTime.addEventListener("click", function () {
+    clearInterval(timer);
+    clearInterval(titleInterval);
+    clearInterval(estimateInterval);
+    clearInterval(breakTimeInit);
+    paused = true;
+    doTask.style.display = "flex";
+    reset.style.display = "none";
+    title.innerHTML = `<span class="text-2xl">Start <span class="font-extrabold text-blue-600">Break</span>.</span>`;
+    pauseBtn.style.display = "none";
+    resumeBtn.style.display = "none";
+    timerElement.style.display = "block";
+    startBtn.style.display = "none";
+    breakInit.style.display = "block";
+    title.style.display = "block";
+    slider.style.display = "none";
+    minElement.style.display = "flex";
+    startAgain.style.display = "none";
+    timerElement.classList.remove("text-gray-400");
+    minElement.classList.remove("text-gray-300");
+    sliderDuration.value = 5;
+    timerElement.innerHTML = sliderDuration.value;
+    timeEstimate.innerHTML = "Begin your break time.";
+    if (this.value == 1) {
+        minElement.innerHTML = "min"
+    } else {
+        minElement.innerHTML = "mins"
+    }
+})
+
+doTask.addEventListener("click", function () {
+    startAgainTimer();
+    doTask.style.display = "none";
+    breakInit.style.display = "none";
+    clearInterval(breakTimeInit);
+})
