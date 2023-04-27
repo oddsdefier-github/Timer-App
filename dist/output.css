@@ -955,10 +955,6 @@ video {
   gap: 0.5rem;
 }
 
-.gap-5 {
-  gap: 1.25rem;
-}
-
 .overflow-y-scroll {
   overflow-y: scroll;
 }
@@ -1089,10 +1085,6 @@ video {
 
 .text-justify {
   text-align: justify;
-}
-
-.text-start {
-  text-align: start;
 }
 
 .text-2xl {
@@ -1957,40 +1949,16 @@ video {
     margin-top: 0px;
   }
 
-  .lg\:mr-5 {
-    margin-right: 1.25rem;
-  }
-
-  .lg\:mr-3 {
-    margin-right: 0.75rem;
-  }
-
   .lg\:flex {
     display: flex;
-  }
-
-  .lg\:h-auto {
-    height: auto;
-  }
-
-  .lg\:h-\[13rem\] {
-    height: 13rem;
-  }
-
-  .lg\:h-\[20rem\] {
-    height: 20rem;
   }
 
   .lg\:h-\[25rem\] {
     height: 25rem;
   }
 
-  .lg\:h-\[27rem\] {
-    height: 27rem;
-  }
-
-  .lg\:h-\[rem\] {
-    height: rem;
+  .lg\:h-auto {
+    height: auto;
   }
 
   .lg\:w-\[25rem\] {
@@ -2003,10 +1971,6 @@ video {
 
   .lg\:w-\[30rem\] {
     width: 30rem;
-  }
-
-  .lg\:gap-5 {
-    gap: 1.25rem;
   }
 
   .lg\:overflow-hidden {

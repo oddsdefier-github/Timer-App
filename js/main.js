@@ -16,7 +16,6 @@ const restartButton = document.getElementById("start-again");
 const estimatedTimeContext = document.getElementById("time-estimate");
 const taskHistoryComponent = document.getElementById("task-history");
 const header = document.querySelector("header");
-const noHistoryMsg = document.getElementById("no-history");
 const taskHistoryButton = document.getElementById("history-button");
 const audioElement = new Audio("achievement-completed.wav");
 const breakTimeButton = document.getElementById("start-break");
@@ -29,13 +28,11 @@ let decrementValue = 1000;
 let finishedTaskCounter = 0;
 let totalBreak = 0;
 let remainingTime;
-let remainingBreakTime;
 
 //intervalId
 let timerIntervalId;
 let boxTitleIntervalId;
 let estimatedTimeIntervalId;
-let breakIntervalId;
 
 
 
@@ -53,10 +50,10 @@ audioElement.setAttribute("preload", "auto");
 finishedTaskCounterDisplay.innerHTML = `<span class="p-2 px-3 rounded-md bg-gray-700 text-gray-100 font-extrabold">${finishedTaskCounter}</span>`;
 
 
-window.addEventListener('beforeunload', function (e) {
-    e.preventDefault();
-    e.returnValue = "";
-});
+// window.addEventListener('beforeunload', function (e) {
+//     e.preventDefault();
+//     e.returnValue = "";
+// });
 
 
 let timeInputValueArr = [];
@@ -72,6 +69,17 @@ let totalTimeSpent = () => {
     }
     return sum;
 }
+
+let checkHistory = () => {
+    setInterval(() => {
+        if (finishedTaskCounter == 0) {
+            taskHistoryButton.style.display = "none";
+        } else {
+            taskHistoryButton.style.display = "flex";
+        }
+    }, 0)
+}
+checkHistory();
 
 
 let currentTime = () => { //current time
@@ -124,7 +132,6 @@ const endOfTimer = () => {
         audioElement.play();
         timerElement.innerHTML = "Done!";
         pauseButton.style.display = "none";
-        noHistoryMsg.style.display = "none";
         minElement.style.display = "none";
         restartButton.style.display = "block";
         finishedTaskStatement.classList.add("snap-end")
@@ -183,14 +190,9 @@ function startTimer() {
             timerElement.innerHTML = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
             remainingTime -= decrementValue;
 
-            if (remainingTime == 59000) {
-                minElement.innerHTML = "min";
-            } else if (remainingTime <= 59000) {
-                minElement.innerHTML = "sec";
-            } else {
-                minElement.innerHTML = "mins";
-            }
+            checkMinElement();
             endOfTimer();
+
 
         }, 1000)
     }
@@ -200,7 +202,6 @@ startButton.addEventListener("click", function () {
     startTimer();
     boxTitleDisplay();
     estimatedTimeDisplay();
-    checkMinElement();
     sliderComponent.style.display = "none";
     startButton.style.display = "none"
     resetButton.style.display = "none";
@@ -336,11 +337,11 @@ function estimatedTimeDisplay() {
     }
 }
 
-function checkMinElement() {
-    if (remainingTime <= 59000) {
-        minElement.innerHTML = "sec";
-    } else if (remainingTime == 60000) {
+let checkMinElement = () => {
+    if (remainingTime <= 60000 && remainingTime >= 59000) {
         minElement.innerHTML = "min";
+    } else if (remainingTime < 60000) {
+        minElement.innerHTML = "sec";
     } else {
         minElement.innerHTML = "mins";
     }
@@ -392,14 +393,9 @@ const calcTimeEstimate = () => {
 function showHistory() {
     if (taskHistoryComponent.style.display === "none") {
         taskHistoryComponent.style.display = "block";
-        if (finishedTaskCounter == 0) {
-            noHistoryMsg.style.display = "inline-block"
-        } else {
-            noHistoryMsg.style.display = "none"
-        }
+
     } else {
         taskHistoryComponent.style.display = "none";
-        noHistoryMsg.style.display = "none"
     }
 };
 taskHistoryButton.addEventListener("click", showHistory);
@@ -415,7 +411,6 @@ let updateHeaderWrapperDisplay = () => {
         finishedTaskStatement.classList.add("snap-end")
     } else if (total >= 10) {
         taskHistoryComponent.classList.add("h-[7rem]", "overflow-y-scroll", "lg:h-[25rem]", "lg:overflow-y-scroll", "snap-mandatory", "snap-y");
-        console.log("hakdog")
     } else {
         headerWrapper.classList.remove("lg:flex");
         taskHistoryComponent.classList.remove("h-[5rem]", "overflow-y-scroll", "lg:h-auto", "lg:overflow-hidden", "snap-mandatory", "snap-y");
@@ -435,38 +430,35 @@ let showFloatingBreakTimeBtn = () => {
 }
 
 let startBreak = () => {
-
-    clearInterval(breakIntervalId);
+    clearInterval(timerIntervalId);
+    clearInterval(boxTitleIntervalId);
     boxTitle.style.display = "block";
     boxTitle.innerHTML = `<span class="text-2xl">You ${totalBreak <= 1 ? 'only' : 'already'} did <span class="font-extrabold text-blue-600">${totalBreak} Break</span>.</span>`;
     restartButton.style.display = "none";
     estimatedTimeContext.innerHTML = "Sharpen your axe by resting.";
+    sliderInput.value = 5;
     const breakDuration = parseInt(sliderInput.value) * 60 * 1000; //convert minutes t0 milliseconds
-    remainingBreakTime = breakDuration;
+    remainingTime = breakDuration;
 
-    breakIntervalId = setInterval(() => {
-        const minutes = Math.floor((remainingBreakTime / 1000 / 60) % 60);
-        const seconds = Math.floor((remainingBreakTime / 1000) % 60);
+    timerIntervalId = setInterval(() => {
+        const minutes = Math.floor((remainingTime / 1000 / 60) % 60);
+        const seconds = Math.floor((remainingTime / 1000) % 60);
         timerElement.innerHTML = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-        remainingBreakTime -= decrementValue;
+        remainingTime -= decrementValue;
 
-        if (remainingBreakTime == 59000) {
-            minElement.innerHTML = "min";
-        } else if (remainingBreakTime <= 59000) {
-            minElement.innerHTML = "sec";
-        } else {
-            minElement.innerHTML = "mins";
-        }
-        doneBreak();
         checkMinElement();
+        doneBreak();
+
 
     }, 1000);
 }
 
+//fix the minELement in Break Time
+
 let doneBreak = () => {
-    if (remainingBreakTime < 0) {
+    if (remainingTime < 0) {
         totalBreak++
-        clearInterval(breakIntervalId);
+        clearInterval(timerIntervalId);
         clearInterval(boxTitleIntervalId);
         clearInterval(estimatedTimeIntervalId);
         displayBreak();
@@ -515,7 +507,7 @@ let doneBreak = () => {
 }
 
 breakTimeButton.addEventListener("click", function () {
-    clearInterval(breakIntervalId);
+    clearInterval(timerIntervalId);
     startBreak();
     checkMinElement();
     breakTimeButton.style.display = "none";
@@ -524,7 +516,6 @@ floatingBreakTimeButton.addEventListener("click", function () {
     clearInterval(timerIntervalId);
     clearInterval(boxTitleIntervalId);
     clearInterval(estimatedTimeIntervalId);
-    clearInterval(breakIntervalId);
     paused = true;
     floatingDoTaskButton.style.display = "flex";
     resetButton.style.display = "none";
@@ -555,5 +546,5 @@ floatingDoTaskButton.addEventListener("click", function () {
     restartTimer();
     floatingDoTaskButton.style.display = "none";
     breakTimeButton.style.display = "none";
-    clearInterval(breakIntervalId);
+    clearInterval(timerIntervalId);
 }) 
