@@ -806,6 +806,10 @@ video {
   margin-bottom: 1.25rem;
 }
 
+.ml-2 {
+  margin-left: 0.5rem;
+}
+
 .ml-5 {
   margin-left: 1.25rem;
 }
@@ -828,10 +832,6 @@ video {
 
 .mt-5 {
   margin-top: 1.25rem;
-}
-
-.ml-2 {
-  margin-left: 0.5rem;
 }
 
 .block {
@@ -883,8 +883,8 @@ video {
   width: 12%;
 }
 
-.w-\[24rem\] {
-  width: 24rem;
+.w-\[23\.5rem\] {
+  width: 23.5rem;
 }
 
 .w-\[60\%\] {
@@ -953,6 +953,10 @@ video {
 
 .gap-2 {
   gap: 0.5rem;
+}
+
+.gap-5 {
+  gap: 1.25rem;
 }
 
 .overflow-y-scroll {
@@ -1085,6 +1089,10 @@ video {
 
 .text-justify {
   text-align: justify;
+}
+
+.text-start {
+  text-align: start;
 }
 
 .text-2xl {
@@ -1885,56 +1893,9 @@ video {
   border-color: rgb(75 85 99 / var(--tw-border-opacity));
 }
 
-.group:hover .group-hover\:text-xs {
-  font-size: 0.75rem;
-  line-height: 1rem;
-}
-
 .group:hover .group-hover\:text-gray-600 {
   --tw-text-opacity: 1;
   color: rgb(75 85 99 / var(--tw-text-opacity));
-}
-
-.font-inter .group:hover .group-hover\:text-xs,.group:hover .group-hover\:text-xs .font-inter {
-  line-height: 1rem;
-  font-size: 0.75rem;
-  letter-spacing: 0.000490774em;
-}
-
-.font-inter .group:hover .group-hover\:text-xs .tracking-tighter, .font-inter .group:hover .group-hover\:text-xs.tracking-tighter,.group:hover .group-hover\:text-xs .font-inter .tracking-tighter,.group:hover .group-hover\:text-xs .font-inter.tracking-tighter, .tracking-tighter .font-inter .group:hover .group-hover\:text-xs, .tracking-tighter .group:hover .group-hover\:text-xs.font-inter {
-  line-height: 1rem;
-  font-size: 0.75rem;
-  letter-spacing: -0.049509226em;
-}
-
-.font-inter .group:hover .group-hover\:text-xs .tracking-tight, .font-inter .group:hover .group-hover\:text-xs.tracking-tight,.group:hover .group-hover\:text-xs .font-inter .tracking-tight,.group:hover .group-hover\:text-xs .font-inter.tracking-tight, .tracking-tight .font-inter .group:hover .group-hover\:text-xs, .tracking-tight .group:hover .group-hover\:text-xs.font-inter {
-  line-height: 1rem;
-  font-size: 0.75rem;
-  letter-spacing: -0.024509226em;
-}
-
-.font-inter .group:hover .group-hover\:text-xs .tracking-normal, .font-inter .group:hover .group-hover\:text-xs.tracking-normal,.group:hover .group-hover\:text-xs .font-inter .tracking-normal,.group:hover .group-hover\:text-xs .font-inter.tracking-normal, .tracking-normal .font-inter .group:hover .group-hover\:text-xs, .tracking-normal .group:hover .group-hover\:text-xs.font-inter {
-  line-height: 1rem;
-  font-size: 0.75rem;
-  letter-spacing: 0.000490774em;
-}
-
-.font-inter .group:hover .group-hover\:text-xs .tracking-wide, .font-inter .group:hover .group-hover\:text-xs.tracking-wide,.group:hover .group-hover\:text-xs .font-inter .tracking-wide,.group:hover .group-hover\:text-xs .font-inter.tracking-wide, .tracking-wide .font-inter .group:hover .group-hover\:text-xs, .tracking-wide .group:hover .group-hover\:text-xs.font-inter {
-  line-height: 1rem;
-  font-size: 0.75rem;
-  letter-spacing: 0.025490774em;
-}
-
-.font-inter .group:hover .group-hover\:text-xs .tracking-wider, .font-inter .group:hover .group-hover\:text-xs.tracking-wider,.group:hover .group-hover\:text-xs .font-inter .tracking-wider,.group:hover .group-hover\:text-xs .font-inter.tracking-wider, .tracking-wider .font-inter .group:hover .group-hover\:text-xs, .tracking-wider .group:hover .group-hover\:text-xs.font-inter {
-  line-height: 1rem;
-  font-size: 0.75rem;
-  letter-spacing: 0.050490774em;
-}
-
-.font-inter .group:hover .group-hover\:text-xs .tracking-widest, .font-inter .group:hover .group-hover\:text-xs.tracking-widest,.group:hover .group-hover\:text-xs .font-inter .tracking-widest,.group:hover .group-hover\:text-xs .font-inter.tracking-widest, .tracking-widest .font-inter .group:hover .group-hover\:text-xs, .tracking-widest .group:hover .group-hover\:text-xs.font-inter {
-  line-height: 1rem;
-  font-size: 0.75rem;
-  letter-spacing: 0.100490774em;
 }
 
 @media (min-width: 768px) {
@@ -1996,12 +1957,40 @@ video {
     margin-top: 0px;
   }
 
+  .lg\:mr-5 {
+    margin-right: 1.25rem;
+  }
+
+  .lg\:mr-3 {
+    margin-right: 0.75rem;
+  }
+
   .lg\:flex {
     display: flex;
   }
 
   .lg\:h-auto {
     height: auto;
+  }
+
+  .lg\:h-\[13rem\] {
+    height: 13rem;
+  }
+
+  .lg\:h-\[20rem\] {
+    height: 20rem;
+  }
+
+  .lg\:h-\[25rem\] {
+    height: 25rem;
+  }
+
+  .lg\:h-\[27rem\] {
+    height: 27rem;
+  }
+
+  .lg\:h-\[rem\] {
+    height: rem;
   }
 
   .lg\:w-\[25rem\] {
@@ -2016,8 +2005,16 @@ video {
     width: 30rem;
   }
 
+  .lg\:gap-5 {
+    gap: 1.25rem;
+  }
+
   .lg\:overflow-hidden {
     overflow: hidden;
+  }
+
+  .lg\:overflow-y-scroll {
+    overflow-y: scroll;
   }
 
   .lg\:text-center {

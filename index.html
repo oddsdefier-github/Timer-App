@@ -13,7 +13,7 @@
 	<body class="flex h-screen w-screen flex-col items-center bg-gray-200 font-inter">
 		<nav class="flex w-full items-center justify-between border-b border-gray-300 px-2 md:px-20">
 			<div class="flex flex-row items-center gap-2 p-2 pl-2">
-				<p id="finished-task"></p>
+				<p id="finished-task-display"></p>
 			</div>
 			<div class="clock-container p-2">
 				<p id="clock" class="font-bold text-base md:text-lg"></p>
@@ -23,12 +23,12 @@
 			<div id="header-wrapper">
 				<div class="lg:w-[25rem]" id="task-history">
 					<p id="no-history" class="hidden p-2 font-semibold">No history...</p>
-					<p id="sentence" class="font-semibold"></p>
+					<p id="finished-task-statement" class="font-semibold"></p>
 				</div>
 				<!-- box -->
-				<div class="timer relative mt-3 h-fit w-[24rem] rounded-md border border-gray-300 bg-white p-3 py-12 shadow-lg lg:mt-0 lg:w-[26rem]" id="box">
+				<div class="timer relative mt-3 h-fit w-[23.5rem] rounded-md border border-gray-300 bg-white p-3 py-12 shadow-lg lg:mt-0 lg:w-[26rem]" id="box">
 					<div>
-						<span class="absolute right-0 top-0 m-4 mb-3 mr-5" id="history">
+						<span class="absolute right-0 top-0 m-4 mb-3 mr-5" id="history-button">
 							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="text-gray-400 hover:text-gray-600" viewBox="0 0 16 16">
 								<path d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022l-.074.997zm2.004.45a7.003 7.003 0 0 0-.985-.299l.219-.976c.383.086.76.2 1.126.342l-.36.933zm1.37.71a7.01 7.01 0 0 0-.439-.27l.493-.87a8.025 8.025 0 0 1 .979.654l-.615.789a6.996 6.996 0 0 0-.418-.302zm1.834 1.79a6.99 6.99 0 0 0-.653-.796l.724-.69c.27.285.52.59.747.91l-.818.576zm.744 1.352a7.08 7.08 0 0 0-.214-.468l.893-.45a7.976 7.976 0 0 1 .45 1.088l-.95.313a7.023 7.023 0 0 0-.179-.483zm.53 2.507a6.991 6.991 0 0 0-.1-1.025l.985-.17c.067.386.106.778.116 1.17l-1 .025zm-.131 1.538c.033-.17.06-.339.081-.51l.993.123a7.957 7.957 0 0 1-.23 1.155l-.964-.267c.046-.165.086-.332.12-.501zm-.952 2.379c.184-.29.346-.594.486-.908l.914.405c-.16.36-.345.706-.555 1.038l-.845-.535zm-.964 1.205c.122-.122.239-.248.35-.378l.758.653a8.073 8.073 0 0 1-.401.432l-.707-.707z" />
 								<path d="M8 1a7 7 0 1 0 4.95 11.95l.707.707A8.001 8.001 0 1 1 8 0v1z" />
@@ -36,22 +36,22 @@
 							</svg>
 						</span>
 						<div class="absolute left-0 top-0 flex items-center justify-center">
-							<button class="group m-4 mb-3 ml-5 flex cursor-help items-center justify-center rounded-md border border-gray-400 px-1" id="break-time" title="Expend 15 minutes to unlock!" disabled>
+							<button class="group m-4 mb-3 ml-5 flex cursor-help items-center justify-center rounded-md border border-gray-400 px-1" id="floating-break-time" title="Expend 15 minutes to unlock!" disabled>
 								<p class="p-1 font-semibold text-gray-500 text-xs">Break-time</p>
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h4 w-4 text-gray-500" id="lock">
 									<path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
 								</svg>
 							</button>
-							<button class="hidden group m-4 mb-3 ml-2 cursor-pointer items-center justify-center rounded-md border border-gray-400 px-1 group-hover:border-gray-600" id="do-task">
-								<p class="p-1 font-semibold text-gray-500 text-xs group-hover:text-gray-600">Pomodoro</p>
+							<button class="group m-4 mb-3 ml-2 hidden cursor-pointer items-center justify-center rounded-md border border-gray-400 px-1 group-hover:border-gray-600" id="do-task">
+								<p class="p-1 font-semibold text-gray-500 text-xs group-hover:text-gray-600">Continue</p>
 							</button>
 						</div>
 					</div>
-					<h1 class="title mb-5 mt-2 text-center font-bold text-2xl" id="title">
+					<h1 class="title mb-5 mt-2 text-center font-bold text-2xl" id="box-title">
 						Do you need to <br />
 						<span class="font-extrabold text-blue-600">get something done</span>?
 					</h1>
-					<div class="my-5 flex h-10 w-full flex-row items-center gap-2 px-10" id="slider">
+					<div class="my-5 flex h-10 w-full flex-row items-center gap-2 px-10" id="slider-component">
 						<input type="range" class="w-[80%] bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-0 active:bg-blue-700" id="duration" min="1" max="45" value="15" step="1" />
 						<span class="flex w-[12%] items-center justify-center rounded-md bg-gray-200 p-1" title="Minutes"><p id="slider-value" class="font-semibold text-sm"></p></span>
 					</div>
@@ -62,11 +62,11 @@
 					<div>
 						<p id="time-estimate"></p>
 					</div>
-					<button id="start" class="action-btn h-8 w-[70%] rounded-lg bg-blue-500 font-semibold text-white hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300 active:bg-blue-700">Start</button>
-					<button id="resume" class="action-btn hidden h-8 w-[60%] rounded-lg border-[1px] border-teal-600 font-semibold text-teal-700 hover:bg-teal-500 hover:text-white focus:outline-none focus:ring focus:ring-teal-300 active:bg-teal-400">Resume</button>
-					<button id="pause" class="action-btn hidden h-8 w-[60%] rounded-lg border-[1px] border-red-600 font-semibold text-red-700 hover:bg-red-500 hover:text-white focus:outline-none focus:ring focus:ring-red-300 active:bg-red-400">Pause</button>
-					<button id="start-again" class="action-btn hidden h-8 w-[60%] rounded-lg border-[1px] border-gray-600 font-semibold text-gray-700 hover:bg-gray-500 hover:text-white focus:outline-none focus:ring focus:ring-gray-300 active:bg-gray-400">Start Again</button>
-					<button id="start-break" class="action-btn hidden h-8 w-[60%] rounded-lg border-[1px] border-gray-600 font-semibold text-gray-700 hover:bg-gray-500 hover:text-white focus:outline-none focus:ring focus:ring-gray-300 active:bg-gray-400">Start Break</button>
+					<button id="start" class="action-btn h-8 w-[70%] rounded-lg bg-blue-500 font-semibold text-white hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300 active:bg-blue-700 text-center">Start</button>
+					<button id="resume" class="action-btn hidden h-8 w-[60%] rounded-lg border-[1px] border-teal-600 font-semibold text-teal-700 hover:bg-teal-500 hover:text-white focus:outline-none focus:ring focus:ring-teal-300 active:bg-teal-400 text-center">Resume</button>
+					<button id="pause" class="action-btn hidden h-8 w-[60%] rounded-lg border-[1px] border-red-600 font-semibold text-red-700 hover:bg-red-500 hover:text-white focus:outline-none focus:ring focus:ring-red-300 active:bg-red-400 text-center">Pause</button>
+					<button id="start-again" class="action-btn hidden h-8 w-[60%] rounded-lg border-[1px] border-gray-600 font-semibold text-gray-700 hover:bg-gray-500 hover:text-white focus:outline-none focus:ring focus:ring-gray-300 active:bg-gray-400 text-center">Start Again</button>
+					<button id="start-break" class="action-btn hidden h-8 w-[60%] rounded-lg border-[1px] border-gray-600 font-semibold text-gray-700 hover:bg-gray-500 hover:text-white focus:outline-none focus:ring focus:ring-gray-300 active:bg-gray-400 text-center">Start Break</button>
 					<p class="hidden cursor-pointer font-bold text-gray-400 hover:text-gray-600" id="reset">reset</p>
 				</div>
 				<!-- box -->
