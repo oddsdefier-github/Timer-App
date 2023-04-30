@@ -47,7 +47,7 @@ timerElement.innerHTML = sliderInput.value;
 floatingBreakTimeButton.style.display = "none";
 taskHistoryComponent.style.display = "block";
 audioElement.setAttribute("preload", "auto");
-finishedTaskCounterDisplay.innerHTML = `<span class="p-2 px-3 rounded-md bg-gray-700 text-gray-100 font-extrabold">${finishedTaskCounter}</span>`;
+finishedTaskCounterDisplay.innerHTML = `<span class="p-2 px-3 rounded-md bg-gray-700 dark:bg-gray-600 text-gray-100 font-extrabold">${finishedTaskCounter}</span>`;
 
 
 // window.addEventListener('beforeunload', function (e) {
@@ -548,3 +548,20 @@ floatingDoTaskButton.addEventListener("click", function () {
     breakTimeButton.style.display = "none";
     clearInterval(timerIntervalId);
 }) 
+
+
+
+
+
+$(function () {
+    $(".dark-toggle").on("click", function () {
+        if ($("html").hasClass("dark")) {
+            $("html").removeClass("dark");
+            $(".dark-toggle").html("Light")
+        } else {
+            $("html").addClass("dark");
+            $(".dark-toggle").html("Dark")
+        }
+    })
+    $("nav > *").addClass("dark:text-white")
+})
