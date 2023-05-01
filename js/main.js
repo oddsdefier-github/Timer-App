@@ -136,7 +136,7 @@ const endOfTimer = () => {
         timeInputValueArr.push(parseInt(sliderInput.value));
         remainingTime = parseInt(sliderInput.value) * 60 * 1000;
         finishedTaskCounterDisplay.innerHTML = `<span class="p-2 px-3 rounded-md bg-gray-700 dark:bg-orange-500 text-gray-100 font-extrabold">${finishedTaskCounter}</span>`;
-        boxTitle.innerHTML = `<span class="text-blue-600">Congratulations!</span> <br> You're ${finishedTaskCounter} ${finishedTaskCounter == 1 ? 'task' : 'tasks'} ahead.`;
+        boxTitle.innerHTML = `<span class="text-blue-600 dark:text-orange-600 ">Congratulations!</span> <br> You're ${finishedTaskCounter} ${finishedTaskCounter == 1 ? 'task' : 'tasks'} ahead.`;
         audioElement.play();
         timerElement.innerHTML = "Done!";
         pauseButton.style.display = "none";
@@ -366,7 +366,7 @@ sliderInput.oninput = function () {
     pauseButton.style.display = "none";
     resumeButton.style.display = "none";
     boxTitle.style.display = "block";
-    boxTitle.innerHTML = `<span class="text-[1.8rem]">Set the <span class="font-extrabold text-blue-600 dark:text-orange-600">timer</span>.</span>`;
+    boxTitle.innerHTML = `<span class="text-[1.6rem]">Set the <span class="font-extrabold text-blue-600 dark:text-orange-600">timer</span>.</span>`;
     timerElement.style.display = "block";
     startButton.style.display = "block";
     minElement.style.display = "flex";
@@ -536,7 +536,7 @@ $(function () {
         if (!$("html").hasClass("dark")) {
             $("html").addClass("dark");
             $(".dark-toggle").css("display", "none");
-            $(".light-toggle").css("display", "flex")
+            $(".light-toggle").css("display", "flex");
         } else {
             $("html").removeClass("dark");
             $(".dark-toggle").css("display", "flex");
