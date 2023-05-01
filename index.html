@@ -4,19 +4,97 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Pomodoro App</title>
-		<link rel="stylesheet" href="style.css" />
-		<script src="main.js" defer></script>
+		<title>pomoDOro.</title>
+		<link rel="stylesheet" href="/dist/style.css" />
+		<script src="./node_modules/jquery/dist/jquery.min.js" defer></script>
+		<script src="/js/main.js" defer></script>
+		<script src="/js/debug.js" defer></script>
+		<link href="/dist/output.css" rel="stylesheet" />
+		<link rel="shortcut icon" href="./icons/favicon.ico" type="image/x-icon" />
 	</head>
-	<body>
-		<div class="clock-container">
-			<p id="clock"></p>
-		</div>
-		<div class="timer">
-			<h1>Pomodoro</h1>
-			<input type="number" id="duration" min="25" max="60"/>
-			<p id="timer">.....</p>
-			<button id="start">Start</button>
-		</div>
+	<body class="flex h-screen w-screen flex-col items-center bg-gray-200 font-inter dark:bg-slate-700">
+		<button class="debug absolute left-40 top-2 hidden rounded-md border border-gray-700 p-1 px-3 dark:border-white dark:text-white lg:block">Debug</button>
+		<nav class="flex w-full items-center justify-between border-b border-gray-300 px-5 dark:border-gray-600 md:px-20">
+			<div class="p-2">
+				<p id="finished-task-display"></p>
+			</div>
+			<div class="clock-container p-2">
+				<p id="clock" class="font-bold text-base md:text-lg"></p>
+			</div>
+			<div>
+				<span class="toggle">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="light-toggle hidden h-6 w-6">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+					</svg>
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="dark-toggle h-6 w-6">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+					</svg>
+				</span>
+			</div>
+		</nav>
+		<header>
+			<div id="header-wrapper">
+				<div class="lg:w-[25rem]" id="task-history">
+					<p id="finished-task-statement" class="font-semibold"></p>
+				</div>
+				<!-- box -->
+				<div class="timer relative mt-3 h-fit w-[23.5rem] rounded-md border border-gray-300 bg-white p-3 py-12 shadow-lg lg:mt-0 lg:w-[26rem]" id="box">
+					<div>
+						<span class="absolute right-0 top-0 m-4 mb-3 mr-5" id="history-button">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="text-gray-400 hover:text-gray-600" viewBox="0 0 16 16">
+								<path d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022l-.074.997zm2.004.45a7.003 7.003 0 0 0-.985-.299l.219-.976c.383.086.76.2 1.126.342l-.36.933zm1.37.71a7.01 7.01 0 0 0-.439-.27l.493-.87a8.025 8.025 0 0 1 .979.654l-.615.789a6.996 6.996 0 0 0-.418-.302zm1.834 1.79a6.99 6.99 0 0 0-.653-.796l.724-.69c.27.285.52.59.747.91l-.818.576zm.744 1.352a7.08 7.08 0 0 0-.214-.468l.893-.45a7.976 7.976 0 0 1 .45 1.088l-.95.313a7.023 7.023 0 0 0-.179-.483zm.53 2.507a6.991 6.991 0 0 0-.1-1.025l.985-.17c.067.386.106.778.116 1.17l-1 .025zm-.131 1.538c.033-.17.06-.339.081-.51l.993.123a7.957 7.957 0 0 1-.23 1.155l-.964-.267c.046-.165.086-.332.12-.501zm-.952 2.379c.184-.29.346-.594.486-.908l.914.405c-.16.36-.345.706-.555 1.038l-.845-.535zm-.964 1.205c.122-.122.239-.248.35-.378l.758.653a8.073 8.073 0 0 1-.401.432l-.707-.707z" />
+								<path d="M8 1a7 7 0 1 0 4.95 11.95l.707.707A8.001 8.001 0 1 1 8 0v1z" />
+								<path d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z" />
+							</svg>
+						</span>
+						<div class="absolute left-0 top-0 flex items-center justify-center">
+							<button class="group m-4 mb-3 ml-5 flex cursor-help items-center justify-center rounded-md border border-gray-400 px-1" id="floating-break-time" title="Expend 15 minutes to unlock!" disabled>
+								<p class="p-1 font-semibold text-gray-500 text-xs">Break-time</p>
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h4 w-4 text-gray-500" id="lock">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+								</svg>
+							</button>
+							<button class="group m-4 mb-3 ml-2 hidden cursor-pointer items-center justify-center rounded-md border border-gray-400 px-1 group-hover:border-gray-600" id="do-task">
+								<p class="p-1 font-semibold text-gray-500 text-xs group-hover:text-gray-600">Continue</p>
+							</button>
+						</div>
+					</div>
+					<h1 class="title mb-5 mt-2 text-center font-bold text-2xl" id="box-title">
+						Do you need to <br />
+						<span class="font-extrabold text-blue-600">get something done</span>?
+					</h1>
+					<div class="my-5 flex h-10 w-full flex-row items-center gap-2 px-10" id="slider-component">
+						<input type="range" class="w-[80%] bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-0 active:bg-blue-700" id="duration" min="1" max="45" value="15" step="1" />
+						<span class="flex w-[12%] items-center justify-center rounded-md bg-gray-200 p-1" title="Minutes"><p id="slider-value" class="font-semibold text-sm"></p></span>
+					</div>
+					<div class="my-5 mb-10 flex h-[5rem] items-center justify-center gap-1">
+						<p id="timer" class="font-semibold text-6xl">.....</p>
+						<p id="min" class="mt-5 font-semibold text-lg">mins</p>
+					</div>
+					<div>
+						<p id="time-estimate"></p>
+					</div>
+					<button id="start" class="action-btn h-8 w-[70%] rounded-lg bg-blue-500 text-center font-semibold text-white hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300 active:bg-blue-700">Start</button>
+					<button id="resume" class="action-btn hidden h-8 w-[60%] rounded-lg border-[1px] border-teal-600 text-center font-semibold text-teal-700 hover:bg-teal-500 hover:text-white focus:outline-none focus:ring focus:ring-teal-300 active:bg-teal-400">Resume</button>
+					<button id="pause" class="action-btn hidden h-8 w-[60%] rounded-lg border-[1px] border-red-600 text-center font-semibold text-red-700 hover:bg-red-500 hover:text-white focus:outline-none focus:ring focus:ring-red-300 active:bg-red-400">Pause</button>
+					<button id="start-again" class="action-btn hidden h-8 w-[60%] rounded-lg border-[1px] border-gray-600 text-center font-semibold text-gray-700 hover:bg-gray-500 hover:text-white focus:outline-none focus:ring focus:ring-gray-300 active:bg-gray-400">Start Again</button>
+					<button id="start-break" class="action-btn hidden h-8 w-[60%] rounded-lg border-[1px] border-gray-600 text-center font-semibold text-gray-700 hover:bg-gray-500 hover:text-white focus:outline-none focus:ring focus:ring-gray-300 active:bg-gray-400">Start Break</button>
+					<p class="hidden cursor-pointer font-bold text-gray-400 hover:text-gray-600" id="reset">reset</p>
+				</div>
+				<!-- box -->
+			</div>
+		</header>
+		<footer class="mt-10 w-full items-center justify-between border-t border-gray-300 px-2 py-10 dark:border-gray-600 md:px-20 lg:mt-0 lg:flex">
+			<div>
+				<p class="px-5 text-justify text-sm lg:w-[30rem]"><a class="font-extrabold text-blue-600 text-lg hover:text-blue-800" href="https://www.techtarget.com/whatis/definition/pomodoro-technique#:~:text=The%20Pomodoro%20Technique%20is%20a,tomato%20(plural%3A%20pomodori).">pomoDOro.</a> is designed to help users stay focused and manage their time effectively while writing a capstone article.</p>
+			</div>
+			<div>
+				<p class="mt-3 px-5 text-[0.5rem] lg:mt-0 lg:text-center">Copyright 2023. ©Jeffry Paner</p>
+			</div>
+		</footer>
+
+		<canvas id="canvas"></canvas>
+
+		<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 	</body>
 </html>

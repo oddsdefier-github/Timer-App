@@ -3,8 +3,21 @@
     "ignorePaths": [],
     "dictionaryDefinitions": [],
     "dictionaries": [],
-    "words": [],
-    "ignoreWords": ["Pomodoro", "Hakdog"],
+    "words": [
+        "darkgreen",
+        "darkorange",
+        "darkpink",
+        "darkpurple",
+        "darkred",
+        "darkturquoise",
+        "darkyellow",
+        "Oopss"
+    ],
+    "ignoreWords": [
+        "Pomodoro",
+        "Hakdog",
+        "gsap",
+        "Paner"
+    ],
     "import": []
 }
-
