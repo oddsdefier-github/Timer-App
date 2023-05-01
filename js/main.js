@@ -24,7 +24,7 @@ const buttonChildElement = document.querySelector("#floating-break-time > *")
 const floatingDoTaskButton = document.getElementById("do-task");
 const floatingBreakTimeButton = document.getElementById("floating-break-time");
 
-let decrementValue = 1000;
+let decrementValue = 60000;
 let finishedTaskCounter = 0;
 let totalBreak = 0;
 let remainingTime;
@@ -50,10 +50,10 @@ audioElement.setAttribute("preload", "auto");
 finishedTaskCounterDisplay.innerHTML = `<span class="p-2 px-3 rounded-md bg-gray-700 dark:bg-orange-500 text-gray-100 font-extrabold">${finishedTaskCounter}</span>`;
 
 
-window.addEventListener('beforeunload', function (e) {
-    e.preventDefault();
-    e.returnValue = "";
-});
+// window.addEventListener('beforeunload', function (e) {
+//     e.preventDefault();
+//     e.returnValue = "";
+// });
 
 let timeInputValueArr = [];
 let totalTimeSpent = () => {
@@ -114,19 +114,32 @@ setInterval(() => {
 
 
 let displayFinished = () => {
-    let data = `<span class="block text-gray-200 dark:text-gray-300 my-2 py-2 text-sm px-3 rounded-md border border-gray-500">Finished <span class="font-bold dark:text-orange-400 text-blue-400">${sliderInput.value} ${sliderInput.value == 1 ? 'minute' : 'minutes'}</span> task at ${currentTime()}.</span>`
-    finishedTaskStatement.innerHTML += data;
-    let newElement = finishedTaskStatement.lastChild;
-    if (newElement.previousElementSibling !== null) {
-        $(newElement.previousElementSibling).removeClass('task-anim');
-    }
-    $(newElement).addClass('task-anim').hide().fadeIn().one('animationend', function () {
+    let data = `<span class="block text-gray-200 dark:text-gray-300 my-2 py-2 text-sm px-3 rounded-md border border-gray-500">Finished <span class="font-bold dark:text-orange-400 text-blue-400">${sliderInput.value} ${sliderInput.value == 1 ? 'minute' : 'minutes'}</span> task at ${currentTime()}.</span>`;
+    let newElement = $(data).addClass('task-anim').hide().fadeIn().one('animationend', function () {
         $(this).removeClass('task-anim');
     });
-}
+    if ($(finishedTaskStatement).children().length > 0) {
+        $(finishedTaskStatement).children().first().before(newElement);
+        finishedTaskStatement.scrollTop = 0;
+        $(finishedTaskStatement.children).removeClass('latest-task');
+        $(newElement).addClass('latest-task');
+    } else {
+        $(finishedTaskStatement).append(newElement);
+        $(newElement).addClass('latest-task');
+    }
+};
+
 let displayBreak = () => {
-    let data = `<span class="block text-gray-200 dark:text-gray-300 my-2 py-2 text-sm px-3 rounded-md border border-gray-500">Took a <span class="font-bold text-blue-600 dark:text-orange-400">${sliderInput.value} minutes</span> break at ${currentTime()}.</span>`
-    finishedTaskStatement.innerHTML += data;
+    let data = `<span class="block text-gray-200 dark:text-gray-300 my-2 py-2 text-sm px-3 rounded-md border border-gray-500">Took a <span class="font-bold text-green-600 dark:text-orange-400">${sliderInput.value} minutes</span> break at ${currentTime()}.</span>`
+    let newElement = $(data).addClass('task-anim').hide().fadeIn().one('animationend', function () {
+        $(this).removeClass('task-anim');
+    });
+    if ($(finishedTaskStatement).children().length > 0) {
+        $(finishedTaskStatement).children().first().before(newElement);
+        finishedTaskStatement.scrollTop = 0;
+    } else {
+        $(finishedTaskStatement).append(newElement);
+    }
 }
 
 let boxTitleDisplay = () => {
@@ -146,7 +159,7 @@ let showHistory = () => {
     }
 };
 const endOfTimer = () => {
-    if (remainingTime == 0) {
+    if (remainingTime < 0) {
         clearInterval(timerIntervalId);
         clearInterval(boxTitleIntervalId);
         clearInterval(estimatedTimeIntervalId);

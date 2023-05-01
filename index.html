@@ -12,14 +12,14 @@
 		<link href="/dist/output.css" rel="stylesheet" />
 		<link rel="shortcut icon" href="./icons/favicon.ico" type="image/x-icon" />
 	</head>
-	<body class="flex h-screen w-screen flex-col items-center bg-gray-200 font-inter dark:bg-darkPrimary">
+	<body class="flex h-screen w-screen flex-col items-center bg-gray-100 font-inter dark:bg-darkPrimary">
 		<!-- <button class="debug absolute left-40 top-2 hidden rounded-md border border-gray-700 p-1 px-3 dark:border-white dark:text-white lg:block">Debug</button> -->
 		<nav class="flex w-full items-center justify-between border-b border-gray-300 px-5 py-2 dark:border-gray-700 md:px-20">
 			<div>
 				<div class="cursor-pointer p-2" id="history-button">
 					<p id="finished-task-display"></p>
 				</div>
-				<div class="absolute z-50 ml-2 mt-2 rounded-md bg-gray-700 p-2 px-3 dark:bg-gray-700" id="task-history">
+				<div class="absolute z-50 ml-2 mt-2 max-h-[25vh] overflow-y-auto rounded-md bg-gray-700 p-2 px-5 dark:bg-gray-700 lg:max-h-[50vh]" id="task-history">
 					<p id="finished-task-statement" class="font-semibold"></p>
 				</div>
 			</div>

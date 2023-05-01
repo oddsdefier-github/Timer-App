@@ -95,7 +95,6 @@ header {
 		transform: translateX(0);
 	}
 }
-
 .task-history-click {
 	animation: slideEntrance 0.8s ease 0s 1 normal forwards;
 }
@@ -109,4 +108,18 @@ header {
 		transform: scale(1);
 		transform-origin: 20% 0%;
 	}
+}
+
+.latest-task {
+	position: relative;
+}
+
+.latest-task::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 4px;
+	height: 100%;
+	background-color: #face00;
 }
