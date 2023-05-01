@@ -24,7 +24,7 @@ const buttonChildElement = document.querySelector("#floating-break-time > *")
 const floatingDoTaskButton = document.getElementById("do-task");
 const floatingBreakTimeButton = document.getElementById("floating-break-time");
 
-let decrementValue = 60000;
+let decrementValue = 1000;
 let finishedTaskCounter = 0;
 let totalBreak = 0;
 let remainingTime;
@@ -37,7 +37,7 @@ let estimatedTimeIntervalId;
 
 
 //confetti
-let count = 270;
+let count = 275;
 let defaults = {
     origin: { y: 0.8 }
 };
@@ -50,10 +50,10 @@ audioElement.setAttribute("preload", "auto");
 finishedTaskCounterDisplay.innerHTML = `<span class="p-2 px-3 rounded-md bg-gray-700 dark:bg-orange-500 text-gray-100 font-extrabold">${finishedTaskCounter}</span>`;
 
 
-// window.addEventListener('beforeunload', function (e) {
-//     e.preventDefault();
-//     e.returnValue = "";
-// });
+window.addEventListener('beforeunload', function (e) {
+    e.preventDefault();
+    e.returnValue = "";
+});
 
 let timeInputValueArr = [];
 let totalTimeSpent = () => {
