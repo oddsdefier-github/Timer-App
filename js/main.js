@@ -44,17 +44,16 @@ let defaults = {
 //confetti
 sliderValueDisplay.innerHTML = sliderInput.value;
 timerElement.innerHTML = sliderInput.value;
+taskHistoryComponent.style.display = "none";
 floatingBreakTimeButton.style.display = "none";
-taskHistoryComponent.style.display = "block";
 audioElement.setAttribute("preload", "auto");
-finishedTaskCounterDisplay.innerHTML = `<span class="p-2 px-3 rounded-md bg-gray-700 dark:bg-gray-600 text-gray-100 font-extrabold">${finishedTaskCounter}</span>`;
+finishedTaskCounterDisplay.innerHTML = `<span class="p-2 px-3 rounded-md bg-gray-700 dark:bg-orange-500 text-gray-100 font-extrabold">${finishedTaskCounter}</span>`;
 
 
 // window.addEventListener('beforeunload', function (e) {
 //     e.preventDefault();
 //     e.returnValue = "";
 // });
-
 
 let timeInputValueArr = [];
 let totalTimeSpent = () => {
@@ -70,12 +69,14 @@ let totalTimeSpent = () => {
     return sum;
 }
 
+
 let checkHistory = () => {
     setInterval(() => {
-        if (finishedTaskCounter == 0) {
-            taskHistoryButton.style.display = "none";
+        if (finishedTaskCounter != 0) {
+            taskHistoryButton.addEventListener("click", showHistory)
         } else {
-            taskHistoryButton.style.display = "flex";
+            taskHistoryButton.removeEventListener("click", showHistory);
+
         }
     }, 0)
 }
@@ -104,21 +105,28 @@ setInterval(() => {
 
 
 let displayFinished = () => {
-    let data = `<span class="block text-gray-600 my-2">Finished <span class="font-bold text-blue-600">${sliderInput.value} ${sliderInput.value == 1 ? 'minute' : 'minutes'}</span> task at ${currentTime()}.</span>`
+    let data = `<span class="block text-gray-200 dark:text-gray-300 my-2 py-2 text-sm px-3 rounded-md bg-gray-800">Finished <span class="font-bold dark:text-orange-400 text-blue-400">${sliderInput.value} ${sliderInput.value == 1 ? 'minute' : 'minutes'}</span> task at ${currentTime()}.</span>`
     finishedTaskStatement.innerHTML += data;
 }
 
 let displayBreak = () => {
-    let data = `<span class="block text-gray-600 my-2">Took a <span class="font-bold text-blue-600">${sliderInput.value} minutes</span> break at ${currentTime()}.</span>`
+    let data = `<span class="block text-gray-200 dark:text-gray-300 my-2 py-2 text-sm px-3 rounded-md bg-gray-800">Took a <span class="font-bold text-blue-600 dark:text-orange-400">${sliderInput.value} minutes</span> break at ${currentTime()}.</span>`
     finishedTaskStatement.innerHTML += data;
 }
 
 let boxTitleDisplay = () => {
     boxTitleIntervalId = setInterval(() => {
-        boxTitle.innerHTML = `<span class="text-2xl text-gray-600">You're <span class="text-blue-500">${Math.round(remainingTime / 60 / 1000)} ${Math.floor(remainingTime / 60 / 1000) <= 1 ? 'min' : 'mins'} </span> closer <br> in finishing <span class="font-extrabold text-gray-900">Capstone</span>!</span>`
+        boxTitle.innerHTML = `<span class="text-2xl text-gray-600">You're <span class="text-blue-500 dark:text-orange-600">${Math.round(remainingTime / 60 / 1000)} ${Math.floor(remainingTime / 60 / 1000) <= 1 ? 'min' : 'mins'} </span> closer <br> in finishing <span class="font-extrabold text-gray-900">Capstone</span>!</span>`
     }, 0);
 }
-
+let showHistory = () => {
+    taskHistoryComponent.style.display === "block";
+    if (taskHistoryComponent.style.display === "none") {
+        taskHistoryComponent.style.display = "block";
+    } else {
+        taskHistoryComponent.style.display = "none";
+    }
+};
 const endOfTimer = () => {
     if (remainingTime == 0) {
         clearInterval(timerIntervalId);
@@ -127,7 +135,7 @@ const endOfTimer = () => {
         finishedTaskCounter++;
         timeInputValueArr.push(parseInt(sliderInput.value));
         remainingTime = parseInt(sliderInput.value) * 60 * 1000;
-        finishedTaskCounterDisplay.innerHTML = `<span class="p-2 px-3 rounded-md bg-gray-700 dark:bg-gray-600 text-gray-100 font-extrabold">${finishedTaskCounter}</span>`;
+        finishedTaskCounterDisplay.innerHTML = `<span class="p-2 px-3 rounded-md bg-gray-700 dark:bg-orange-500 text-gray-100 font-extrabold">${finishedTaskCounter}</span>`;
         boxTitle.innerHTML = `<span class="text-blue-600">Congratulations!</span> <br> You're ${finishedTaskCounter} ${finishedTaskCounter == 1 ? 'task' : 'tasks'} ahead.`;
         audioElement.play();
         timerElement.innerHTML = "Done!";
@@ -136,7 +144,6 @@ const endOfTimer = () => {
         restartButton.style.display = "block";
         finishedTaskStatement.classList.add("snap-end")
         estimatedTimeContext.innerHTML = "Begin new task.";
-        updateHeaderWrapperDisplay();
         displayFinished();
         totalTimeSpent();
         //confetti
@@ -273,7 +280,7 @@ function restartTimer() {
     clearInterval(timerIntervalId);
     clearInterval(estimatedTimeIntervalId);
     clearInterval(boxTitleIntervalId);
-    boxTitle.innerHTML = `Begin <span class="text-blue-600 font-extrabold">new task</span>.`;
+    boxTitle.innerHTML = `Begin <span class="text-blue-600 dark:text-orange-600 font-extrabold">new task</span>.`;
     sliderInput.value = 15;
     sliderValueDisplay.innerHTML = sliderInput.value;
     sliderComponent.style.display = "flex";
@@ -359,7 +366,7 @@ sliderInput.oninput = function () {
     pauseButton.style.display = "none";
     resumeButton.style.display = "none";
     boxTitle.style.display = "block";
-    boxTitle.innerHTML = `<span class="text-2xl">Set the <span class="font-extrabold text-blue-600">timer</span>.</span>`;
+    boxTitle.innerHTML = `<span class="text-[1.8rem]">Set the <span class="font-extrabold text-blue-600 dark:text-orange-600">timer</span>.</span>`;
     timerElement.style.display = "block";
     startButton.style.display = "block";
     minElement.style.display = "flex";
@@ -390,35 +397,6 @@ const calcTimeEstimate = () => {
 }
 
 
-function showHistory() {
-    if (taskHistoryComponent.style.display === "none") {
-        taskHistoryComponent.style.display = "block";
-
-    } else {
-        taskHistoryComponent.style.display = "none";
-    }
-};
-taskHistoryButton.addEventListener("click", showHistory);
-
-
-let updateHeaderWrapperDisplay = () => {
-    const headerWrapper = document.getElementById("header-wrapper");
-    let total = finishedTaskCounter + totalBreak;
-    if (total >= 4 && total < 10) {
-        console.log()
-        headerWrapper.classList.add("lg:flex");
-        taskHistoryComponent.classList.add("h-[7rem]", "overflow-y-scroll", "lg:h-auto", "lg:overflow-hidden", "snap-mandatory", "snap-y");
-        finishedTaskStatement.classList.add("snap-end")
-    } else if (total >= 10) {
-        taskHistoryComponent.classList.add("h-[7rem]", "overflow-y-scroll", "lg:h-[25rem]", "lg:overflow-y-scroll", "snap-mandatory", "snap-y");
-    } else {
-        headerWrapper.classList.remove("lg:flex");
-        taskHistoryComponent.classList.remove("h-[5rem]", "overflow-y-scroll", "lg:h-auto", "lg:overflow-hidden", "snap-mandatory", "snap-y");
-        taskHistoryComponent.classList.remove("h-[7rem]", "overflow-y-scroll", "lg:h-[25rem]", "lg:overflow-y-scroll", "snap-mandatory", "snap-y");
-        finishedTaskStatement.classList.remove("snap-end")
-    }
-}
-
 let showFloatingBreakTimeBtn = () => {
     floatingBreakTimeButton.style.display = "flex";
     floatingBreakTimeButton.classList.add("group", "hover:border-gray-600", "cursor-pointer");
@@ -433,7 +411,7 @@ let startBreak = () => {
     clearInterval(timerIntervalId);
     clearInterval(boxTitleIntervalId);
     boxTitle.style.display = "block";
-    boxTitle.innerHTML = `<span class="text-2xl">You ${totalBreak <= 1 ? 'only' : 'already'} did <span class="font-extrabold text-blue-600">${totalBreak} Break</span>.</span>`;
+    boxTitle.innerHTML = `<span class="text-2xl">You ${totalBreak <= 1 ? 'only' : 'already'} did <span class="font-extrabold text-blue-600 dark:text-orange-600">${totalBreak} Break</span>.</span>`;
     restartButton.style.display = "none";
     estimatedTimeContext.innerHTML = "Sharpen your axe by resting.";
     sliderInput.value = 5;
@@ -468,7 +446,7 @@ let doneBreak = () => {
         floatingDoTaskButton.style.display = "none";
         breakTimeButton.style.display = "none";
         minElement.style.display = "none";
-        boxTitle.innerHTML = `<span class="text-blue-600">Times up!</span>`;
+        boxTitle.innerHTML = `<span class="text-blue-600 dark:text-orange-600">Times up!</span>`;
         timerElement.innerHTML = "Done!";
         estimatedTimeContext.innerHTML = "Begin your task.";
 
@@ -519,7 +497,7 @@ floatingBreakTimeButton.addEventListener("click", function () {
     paused = true;
     floatingDoTaskButton.style.display = "flex";
     resetButton.style.display = "none";
-    boxTitle.innerHTML = `<span class="text-2xl">Start <span class="font-extrabold text-blue-600">Break</span>.</span>`;
+    boxTitle.innerHTML = `<span class="text-2xl">Start <span class="font-extrabold text-blue-600 dark:text-orange-600"">Break</span>.</span>`;
     startButton.style.display = "none";
     pauseButton.style.display = "none";
     resumeButton.style.display = "none";

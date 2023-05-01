@@ -6,7 +6,12 @@ module.exports = {
     "./index.html"
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'darkPrimary': "#22272e",
+        'orangePrimary': "#f06d06",
+      }
+    },
   },
   plugins: [require('tailwindcss-font-inter')],
 }
