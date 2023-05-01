@@ -1,22 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 	<head>
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>pomoDOro.</title>
 		<link rel="stylesheet" href="/dist/style.css" />
+		<script src="./node_modules/jquery/dist/jquery.min.js" defer></script>
 		<script src="/js/main.js" defer></script>
 		<link href="/dist/output.css" rel="stylesheet" />
 		<link rel="shortcut icon" href="./icons/favicon.ico" type="image/x-icon" />
 	</head>
-	<body class="flex h-screen w-screen flex-col items-center bg-gray-200 font-inter">
+	<body class="flex h-screen w-screen flex-col items-center bg-gray-200 font-inter dark:bg-gray-800">
 		<nav class="flex w-full items-center justify-between border-b border-gray-300 px-2 md:px-20">
 			<div class="flex flex-row items-center gap-2 p-2 pl-2">
 				<p id="finished-task"></p>
 			</div>
 			<div class="clock-container p-2">
-				<p id="clock" class="font-bold text-base md:text-lg"></p>
+				<!-- <p id="clock" class="font-bold text-base md:text-lg"></p> -->
+				<button class="toggle-dark btn-text text-gray-600 dark:text-white">Dark</button>
 			</div>
 		</nav>
 		<header>
@@ -42,7 +44,7 @@
 									<path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
 								</svg>
 							</button>
-							<button class="hidden group m-4 mb-3 ml-2 cursor-pointer items-center justify-center rounded-md border border-gray-400 px-1 group-hover:border-gray-600" id="do-task">
+							<button class="group m-4 mb-3 ml-2 hidden cursor-pointer items-center justify-center rounded-md border border-gray-400 px-1 group-hover:border-gray-600" id="do-task">
 								<p class="p-1 font-semibold text-gray-500 text-xs group-hover:text-gray-600">Pomodoro</p>
 							</button>
 						</div>

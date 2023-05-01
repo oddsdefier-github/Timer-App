@@ -59,15 +59,15 @@ let currentTime = () => { //current time
     return time;
 }
 
-setInterval(() => {
-    const now = new Date();
-    let hours = now.getHours().toString().padStart(2, "0");
-    const minutes = now.getMinutes().toString().padStart(2, "0");
-    const amOrPm = hours >= 12 ? 'pm' : 'am';
-    hours = (hours % 12) || 12;
-    let time = `${hours}:${minutes} ${amOrPm}`;
-    clockElement.textContent = time;
-}, 0)
+// setInterval(() => {
+//     const now = new Date();
+//     let hours = now.getHours().toString().padStart(2, "0");
+//     const minutes = now.getMinutes().toString().padStart(2, "0");
+//     const amOrPm = hours >= 12 ? 'pm' : 'am';
+//     hours = (hours % 12) || 12;
+//     let time = `${hours}:${minutes} ${amOrPm}`;
+//     clockElement.textContent = time;
+// }, 0)
 
 
 let displayFinished = () => {
@@ -524,4 +524,17 @@ doTask.addEventListener("click", function () {
     doTask.style.display = "none";
     breakInit.style.display = "none";
     clearInterval(breakTimeInit);
+})
+
+
+$(".toggle-dark").on("click", function () {
+    if ($("html").hasClass("dark")) {
+        $("html").removeClass("dark");
+        $(".toggle-dark").html("Light")
+        console.log("hakdog")
+
+    } else {
+        $("html").addClass("dark");
+        $(".toggle-dark").html("Dark")
+    }
 })
