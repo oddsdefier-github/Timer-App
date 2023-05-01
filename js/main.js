@@ -24,7 +24,7 @@ const buttonChildElement = document.querySelector("#floating-break-time > *")
 const floatingDoTaskButton = document.getElementById("do-task");
 const floatingBreakTimeButton = document.getElementById("floating-break-time");
 
-let decrementValue = 20000;
+let decrementValue = 1000;
 let finishedTaskCounter = 0;
 let totalBreak = 0;
 let remainingTime;
@@ -50,10 +50,10 @@ audioElement.setAttribute("preload", "auto");
 finishedTaskCounterDisplay.innerHTML = `<span class="p-2 px-3 rounded-md bg-gray-700 dark:bg-orange-500 text-gray-100 font-extrabold">${finishedTaskCounter}</span>`;
 
 
-// window.addEventListener('beforeunload', function (e) {
-//     e.preventDefault();
-//     e.returnValue = "";
-// });
+window.addEventListener('beforeunload', function (e) {
+    e.preventDefault();
+    e.returnValue = "";
+});
 
 let timeInputValueArr = [];
 let totalTimeSpent = () => {
@@ -69,11 +69,20 @@ let totalTimeSpent = () => {
     return sum;
 }
 
+let clickSound = () => {
+    const click = new Audio('btn-click.wav');
+    click.play()
+}
+
+let lightToggleSound = () => {
+    const click = new Audio('light-btn.wav');
+    click.play()
+}
 
 let checkHistory = () => {
     setInterval(() => {
         if (finishedTaskCounter != 0) {
-            taskHistoryButton.addEventListener("click", showHistory)
+            taskHistoryButton.addEventListener("click", showHistory);
         } else {
             taskHistoryButton.removeEventListener("click", showHistory);
 
@@ -105,12 +114,18 @@ setInterval(() => {
 
 
 let displayFinished = () => {
-    let data = `<span class="block text-gray-200 dark:text-gray-300 my-2 py-2 text-sm px-3 rounded-md bg-gray-800">Finished <span class="font-bold dark:text-orange-400 text-blue-400">${sliderInput.value} ${sliderInput.value == 1 ? 'minute' : 'minutes'}</span> task at ${currentTime()}.</span>`
+    let data = `<span class="block text-gray-200 dark:text-gray-300 my-2 py-2 text-sm px-3 rounded-md border border-gray-500">Finished <span class="font-bold dark:text-orange-400 text-blue-400">${sliderInput.value} ${sliderInput.value == 1 ? 'minute' : 'minutes'}</span> task at ${currentTime()}.</span>`
     finishedTaskStatement.innerHTML += data;
+    let newElement = finishedTaskStatement.lastChild;
+    if (newElement.previousElementSibling !== null) {
+        $(newElement.previousElementSibling).removeClass('task-anim');
+    }
+    $(newElement).addClass('task-anim').hide().fadeIn().one('animationend', function () {
+        $(this).removeClass('task-anim');
+    });
 }
-
 let displayBreak = () => {
-    let data = `<span class="block text-gray-200 dark:text-gray-300 my-2 py-2 text-sm px-3 rounded-md bg-gray-800">Took a <span class="font-bold text-blue-600 dark:text-orange-400">${sliderInput.value} minutes</span> break at ${currentTime()}.</span>`
+    let data = `<span class="block text-gray-200 dark:text-gray-300 my-2 py-2 text-sm px-3 rounded-md border border-gray-500">Took a <span class="font-bold text-blue-600 dark:text-orange-400">${sliderInput.value} minutes</span> break at ${currentTime()}.</span>`
     finishedTaskStatement.innerHTML += data;
 }
 
@@ -120,11 +135,14 @@ let boxTitleDisplay = () => {
     }, 0);
 }
 let showHistory = () => {
+    taskHistoryComponent.classList.add("task-history-click");
+
     taskHistoryComponent.style.display === "block";
     if (taskHistoryComponent.style.display === "none") {
         taskHistoryComponent.style.display = "block";
     } else {
         taskHistoryComponent.style.display = "none";
+
     }
 };
 const endOfTimer = () => {
@@ -205,6 +223,7 @@ function startTimer() {
     }
 }
 startButton.addEventListener("click", function () {
+    clickSound();
     clearInterval(estimatedTimeIntervalId);
     startTimer();
     boxTitleDisplay();
@@ -237,11 +256,13 @@ function pauseTimer() {
     minElement.classList.add("text-gray-300");
 }
 pauseButton.addEventListener("click", function () {
+    clickSound();
     pauseTimer();
 });
 
 //resume
 function resumeTimer() {
+
     paused = false;
     estimatedTimeDisplay();
     if (!paused) {
@@ -533,15 +554,24 @@ floatingDoTaskButton.addEventListener("click", function () {
 
 $(function () {
     $(".toggle").on("click", function () {
+        lightToggleSound()
         if (!$("html").hasClass("dark")) {
             $("html").addClass("dark");
             $(".dark-toggle").css("display", "none");
             $(".light-toggle").css("display", "flex");
+            $("body").css("transition", "0.6s", "ease-in")
         } else {
             $("html").removeClass("dark");
             $(".dark-toggle").css("display", "flex");
-            $(".light-toggle").css("display", "none")
+            $(".light-toggle").css("display", "none");
+            $("body").css("transition", "0.6s", "ease-in")
         }
     })
-    $("nav > *").addClass("dark:text-white")
+    $("nav > *").addClass("dark:text-white");
+
+    $(".eye").on("click", function () {
+        $("footer").toggle();
+        $(".eye > *").toggle()
+
+    })
 })
